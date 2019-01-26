@@ -4,7 +4,7 @@
 
 | Name | NEU ID | Email Address |
 | --- | --- | --- |
-| | | |
+| Satish Kumar Anbalagan| 001351994| anbalagan.s@husky.neu.edu|
 | | | |
 | | | |
 | | | |
