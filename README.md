@@ -3,7 +3,7 @@
 ## Team Information
 
 | Name | NEU ID | Email Address |
-| --- | --- | --- |
+| Hemalkumar Gadhiya | 001460577 | gadhiya.h@husky.neu.edu|
 | | | |
 | | | |
 | | | |
