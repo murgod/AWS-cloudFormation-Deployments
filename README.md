@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | Satish Kumar Anbalagan| 001351994| anbalagan.s@husky.neu.edu|
 | Paavan Gopala Reddy| 01813403| gopalareddy.p@husky.neu.edu|
-| | | |
+| HemalKumar Gadhiya|001460577 |gadhiya.h@husky.neu.edu|
 | | | |
 
 ## Technology Stack
