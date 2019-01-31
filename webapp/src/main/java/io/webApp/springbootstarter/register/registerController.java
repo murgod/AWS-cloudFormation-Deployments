@@ -47,6 +47,9 @@ public class registerController {
 	@RequestMapping(method=RequestMethod.POST, value="/user/register")
 
 	public String addUser(@RequestBody register userDetails) {
+		if(userDetails.getEmail().isEmpty() || userDetails.getPassword().isEmpty()) {
+			return "{\"RESPONSE\" : \"Credentials should not be empty\"}";
+		}
 		if (checkVaildEmailAddr(userDetails.getEmail())) {
 			if (checkAlreadyPresent(userDetails)) {
 				return "{\"RESPONSE\" : \"User email already exists. Please Login\"}";
@@ -86,7 +89,7 @@ public class registerController {
 		}
 		for(register i : dbList)
 		{
-			if(i.getEmail().equals(userDetails.getEmail())) {
+			if(i.getEmail().equals(userDetails.getEmail())&&(i.getPassword().equals(userDetails.getPassword()))) {
 				String password = BCrypt.hashpw(userDetails.getPassword(), BCrypt.gensalt());
 				if (BCrypt.checkpw(userDetails.getPassword(), password)) {
 				    System.out.println("It matches");
