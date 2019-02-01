@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 
-
 @RestController
 public class registerController {
 
@@ -50,6 +49,9 @@ public class registerController {
 	public String addUser(@RequestBody register userDetails) {
 		if(userDetails.getEmail().isEmpty() || userDetails.getPassword().isEmpty()) {
 			return "{\"RESPONSE\" : \"Credentials should not be empty\"}";
+		}
+		if (!isValidPassword(userDetails.getPassword())) {
+			return "{\"RESPONSE\" : \"password should follow NIST standards\"}";
 		}
 		if (checkVaildEmailAddr(userDetails.getEmail())) {
 			if (checkAlreadyPresent(userDetails)) {
@@ -85,9 +87,8 @@ public class registerController {
 	public boolean checkPassword(register userDetails) {
 		System.out.println("Checking password");
 		ArrayList<register>dbList = new ArrayList<>(userRepository.findAll());
-		if (userDetails.getPassword().length() < 8) {
-			return false;
-		}
+
+
 		for(register i : dbList)
 		{
 			if(i.getEmail().equals(userDetails.getEmail())&&(i.getPassword().equals(userDetails.getPassword()))) {
@@ -101,6 +102,14 @@ public class registerController {
 				}
 		}
 		return false;
+	}
+	
+	public boolean isValidPassword(String password) {
+		if (!(password.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"))) {
+			System.out.println("Invalid password");
+			return false;
+		}
+		return true;
 	}
 	
 	public boolean registerUser(@RequestBody final register userData) {
