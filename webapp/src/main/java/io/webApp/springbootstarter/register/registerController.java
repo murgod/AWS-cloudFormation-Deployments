@@ -47,6 +47,12 @@ public class registerController {
 	@RequestMapping(method=RequestMethod.POST, value="/user/register")
 
 	public String addUser(@RequestBody register userDetails) {
+		if(userDetails.getEmail().isEmpty() || userDetails.getPassword().isEmpty()) {
+			return "{\"RESPONSE\" : \"Credentials should not be empty\"}";
+		}
+		if (!isValidPassword(userDetails.getPassword())) {
+			return "{\"RESPONSE\" : \"password should follow NIST standards\"}";
+		}
 		if (checkVaildEmailAddr(userDetails.getEmail())) {
 			if (checkAlreadyPresent(userDetails)) {
 				return "{\"RESPONSE\" : \"User email already exists. Please Login\"}";
@@ -81,12 +87,11 @@ public class registerController {
 	public boolean checkPassword(register userDetails) {
 		System.out.println("Checking password");
 		ArrayList<register>dbList = new ArrayList<>(userRepository.findAll());
-		if (userDetails.getPassword().length() < 8) {
-			return false;
-		}
+
+
 		for(register i : dbList)
 		{
-			if(i.getEmail().equals(userDetails.getEmail())) {
+			if(i.getEmail().equals(userDetails.getEmail())&&(i.getPassword().equals(userDetails.getPassword()))) {
 				String password = BCrypt.hashpw(userDetails.getPassword(), BCrypt.gensalt());
 				if (BCrypt.checkpw(userDetails.getPassword(), password)) {
 				    System.out.println("It matches");
@@ -97,6 +102,14 @@ public class registerController {
 				}
 		}
 		return false;
+	}
+	
+	public boolean isValidPassword(String password) {
+		if (!(password.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"))) {
+			System.out.println("Invalid password");
+			return false;
+		}
+		return true;
 	}
 	
 	public boolean registerUser(@RequestBody final register userData) {
