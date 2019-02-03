@@ -91,9 +91,9 @@ public class registerController {
 
 		for(register i : dbList)
 		{
-			if(i.getEmail().equals(userDetails.getEmail())&&(i.getPassword().equals(userDetails.getPassword()))) {
-				String password = BCrypt.hashpw(userDetails.getPassword(), BCrypt.gensalt());
-				if (BCrypt.checkpw(userDetails.getPassword(), password)) {
+			if(i.getEmail().equals(userDetails.getEmail())) {
+				//String password = BCrypt.hashpw(userDetails.getPassword(), BCrypt.gensalt());
+				if (BCrypt.checkpw(userDetails.getPassword(), i.getPassword())) {
 				    System.out.println("It matches");
 				    return true;
 				}
