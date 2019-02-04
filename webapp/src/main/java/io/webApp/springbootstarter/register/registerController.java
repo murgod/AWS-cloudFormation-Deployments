@@ -160,7 +160,7 @@ public class registerController {
 		}
 		else 
 		{
-			String time =  "{\"RESPONSE\" : " + currentTime() + "\"}\"";
+			String time =  "{\"RESPONSE: Token Authenticated \" : " + currentTime() + "\"}\"";
 			return time;
 					//JSONObject.quote(currentTime());
 		}
