@@ -34,15 +34,6 @@ public class registerController {
 	@Autowired
 	private UserRepository userRepository;
 	
-	@RequestMapping("/user")
-	public List<register> getRegisteredUser(){
-		return rService.registeredUser();
-	}
-	
-	@RequestMapping("/user/register/{emailID}")
-	public register getregister(@PathVariable String emailID) {
-		return rService.getRegister(emailID);
-	}
 	
 	@RequestMapping(method=RequestMethod.POST, value="/user/register")
 
@@ -50,12 +41,13 @@ public class registerController {
 		if(userDetails.getEmail().isEmpty() || userDetails.getPassword().isEmpty()) {
 			return "{\"RESPONSE\" : \"Credentials should not be empty\"}";
 		}
-		if (!isValidPassword(userDetails.getPassword())) {
-			return "{\"RESPONSE\" : \"password should follow NIST standards\"}";
-		}
+
 		if (checkVaildEmailAddr(userDetails.getEmail())) {
 			if (checkAlreadyPresent(userDetails)) {
 				return "{\"RESPONSE\" : \"User email already exists. Please Login\"}";
+			}
+			if (!isValidPassword(userDetails.getPassword())) {
+				return "{\"RESPONSE\" : \"password should follow NIST standards\"}";
 			}
 			registerUser(userDetails);
 			return "{\"RESPONSE\" : \"Registeration Successful\"}";
@@ -91,9 +83,9 @@ public class registerController {
 
 		for(register i : dbList)
 		{
-			if(i.getEmail().equals(userDetails.getEmail())&&(i.getPassword().equals(userDetails.getPassword()))) {
-				String password = BCrypt.hashpw(userDetails.getPassword(), BCrypt.gensalt());
-				if (BCrypt.checkpw(userDetails.getPassword(), password)) {
+			if(i.getEmail().equals(userDetails.getEmail())) {
+				//String password = BCrypt.hashpw(userDetails.getPassword(), BCrypt.gensalt());
+				if (BCrypt.checkpw(userDetails.getPassword(), i.getPassword())) {
 				    System.out.println("It matches");
 				    return true;
 				}
@@ -160,7 +152,7 @@ public class registerController {
 		}
 		else 
 		{
-			String time =  "{\"RESPONSE\" : " + currentTime() + "\"}\"";
+			String time =  "{\"RESPONSE: Token Authenticated \" : " + currentTime() + "\"}\"";
 			return time;
 					//JSONObject.quote(currentTime());
 		}
