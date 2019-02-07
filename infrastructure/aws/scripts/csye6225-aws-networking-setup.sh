@@ -354,6 +354,9 @@ Port_TCP_ingress=$(aws ec2 authorize-security-group-ingress --group-id $SGId --p
 Port_TCP_ingress_Result_Status=$?
 Port_HTTP_ingress=$(aws ec2 authorize-security-group-ingress --group-id $SGId --protocol tcp --port 80 --cidr $default_ip)
 Port_HTTP_ingress_Result_Status=$?
+Port_TCP_egress=$(aws ec2 authorize-security-group-egress --group-id $SGId --protocol tcp --port 22 --cidr $default_ip)
+Port_HTTP_egress=$(aws ec2 authorize-security-group-egress --group-id $SGId --protocol tcp --port 80 --cidr $default_ip)
+Port_revoke_egress=$(aws ec2 revoke-security-group-egress --group-id $SGId --protocol all --cidr $default_ip)
 
 if [ $Port_TCP_ingress_Result_Status -eq 0 ]; then
   echo "Allowing traffic from port 22 in Security GroupId: $SGId ."
