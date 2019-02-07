@@ -78,3 +78,101 @@ else
     exit $VPC_RENAME_STATUS
 fi
 
+#--------------------------------------------------------------------------------------------------
+#Step2: Create subnets in your VPC. You must create 3 subnets, each in different availability zone in the same region under same VPC.
+#--------------------------------------------------------------------------------------------------
+echo -e "\n"
+echo "-------------------------------------------------------------------------------------------------------------------------------------"
+echo "Step2: Create subnets in your VPC. You must create 3 subnets, each in different availability zone in the same region under same VPC."
+echo "-------------------------------------------------------------------------------------------------------------------------------------"
+echo -e "\n"
+echo "Please provide IP Address for subnet 1 in x.x.x.x/x"
+read CIDR_BLOCK
+
+#echo "Please provide Availability zones for Public subnet 1"
+PUBLIC_SUBNET_1=$(aws ec2 create-subnet \
+  --vpc-id $VPC_ID \
+  --cidr-block $CIDR_BLOCK \
+  --availability-zone $ZONE1 \
+  --query 'Subnet.{SubnetId:SubnetId}' \
+  --output text \
+  --region $REGION)
+
+echo  "Subnet ID '$PUBLIC_SUBNET_1' is created in '$ZONE1'" "Availability Zone."
+
+# Rename Public Subnet 1
+echo -e "\n"
+echo "RENAME PUBLIC SUBNET 1"
+SUBNET_RENAME=$(aws ec2 create-tags \
+  --resources $PUBLIC_SUBNET_1 \
+  --tags "Key=Name,Value=$PublicSubnet1" 2>&1)
+SUBNET_RENAME_STATUS=$?
+if [ $SUBNET_RENAME_STATUS -eq 0 ]; then
+  echo "Public Subnet ID '$PUBLIC_SUBNET_1' NAMED as '$PublicSubnet1'."
+else
+    echo "Error:PublicSubnet1 name not added!!"
+    echo " $SUBNET_RENAME "
+    exit $SUBNET_RENAME_STATUS
+fi
+
+echo -e "\n"
+echo "Please provide IP Address for Public subnet 2 in x.x.x.x/x"
+read CIDR_BLOCK
+
+#echo "Please provide Availability zones for Public subnet 2"
+PUBLIC_SUBNET_2=$(aws ec2 create-subnet \
+  --vpc-id $VPC_ID \
+  --cidr-block $CIDR_BLOCK \
+  --availability-zone $ZONE2 \
+  --query 'Subnet.{SubnetId:SubnetId}' \
+  --output text \
+  --region $REGION)
+
+echo  "Subnet ID '$PUBLIC_SUBNET_2' is created in '$ZONE2'" "Availability Zone."
+
+# Rename Public Subnet 2
+echo -e "\n"
+echo "RENAME PUBLIC SUBNET 2"
+SUBNET_RENAME=$(aws ec2 create-tags \
+  --resources $PUBLIC_SUBNET_2 \
+  --tags "Key=Name,Value=$PublicSubnet2" 2>&1)
+SUBNET_RENAME_STATUS=$?
+if [ $SUBNET_RENAME_STATUS -eq 0 ]; then
+  echo "Public Subnet ID '$PUBLIC_SUBNET_2' NAMED as '$PublicSubnet2'."
+else
+    echo "Error:PublicSubnet2 name not added!!"
+    echo " $SUBNET_RENAME "
+    exit $SUBNET_RENAME_STATUS
+fi
+
+
+echo -e "\n"
+echo "Please provide IP Address for Public subnet 3 in x.x.x.x/x"
+read CIDR_BLOCK
+
+# echo "Please provide Availability zones for Public subnet 3"
+PUBLIC_SUBNET_3=$(aws ec2 create-subnet \
+  --vpc-id $VPC_ID \
+  --cidr-block $CIDR_BLOCK \
+  --availability-zone $ZONE3 \
+  --query 'Subnet.{SubnetId:SubnetId}' \
+  --output text \
+  --region $REGION)
+
+echo  "Subnet ID '$PUBLIC_SUBNET_3' is created in '$ZONE3'" "Availability Zone."
+
+# Rename Public Subnet 3
+echo -e "\n"
+echo "RENAME PUBLIC SUBNET 3"
+SUBNET_RENAME=$(aws ec2 create-tags \
+  --resources $PUBLIC_SUBNET_3 \
+  --tags "Key=Name,Value=$PublicSubnet3" 2>&1)
+SUBNET_RENAME_STATUS=$?
+if [ $SUBNET_RENAME_STATUS -eq 0 ]; then
+  echo "Public Subnet ID '$PUBLIC_SUBNET_3' NAMED as '$PublicSubnet3'."
+else
+    echo "Error:PublicSubnet3 name not added!!"
+    echo " $SUBNET_RENAME "
+    exit $SUBNET_RENAME_STATUS
+fi
+
