@@ -129,3 +129,117 @@
                 ]
             }
         },
+        "InternetGateway": {
+            "Type": "AWS::EC2::InternetGateway",
+            "Properties": {
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {"Fn::Join":["",[{"Ref": "StackName"},"-public-IG"]]}
+                    }
+                ]
+            }
+        },
+        "GatewayAttachment": {
+            "Type": "AWS::EC2::VPCGatewayAttachment",
+            "DependsOn": [
+                "InternetGateway",
+                "VPC"
+            ],
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "InternetGatewayId": {
+                    "Ref": "InternetGateway"
+                }
+            }
+        },
+        "PublicRouteTable": {
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {
+
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {"Fn::Join":["",[{"Ref": "StackName"},"-csye6225-rt"]]}
+                    }
+                ]
+            }
+        },
+        "Route": {
+            "Type": "AWS::EC2::Route",
+            "DependsOn": [
+                "PublicRouteTable",
+                "InternetGateway"
+            ],
+            "Properties": {
+                "RouteTableId": {
+                    "Ref": "PublicRouteTable"
+                },
+                "DestinationCidrBlock":{"Ref":"RouteIpaddress"},
+                "GatewayId": {
+                    "Ref": "InternetGateway"
+                }
+            }
+        },
+        "PublicSubnetRouteTableAssociation1": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "DependsOn": [
+                "publicsubnet1",
+                "PublicRouteTable",
+                "GatewayAttachment"
+            ],
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "publicsubnet1"
+                },
+                "RouteTableId": {
+                    "Ref": "PublicRouteTable"
+                }
+            }
+        },
+        "PublicSubnetRouteTableAssociation2": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "DependsOn": [
+                "publicsubnet2",
+                "PublicRouteTable",
+                "GatewayAttachment"
+            ],
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "publicsubnet2"
+                },
+                "RouteTableId": {
+                    "Ref": "PublicRouteTable"
+                }
+            }
+        },
+        "PublicSubnetRouteTableAssociation3": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "DependsOn": [
+                "publicsubnet3",
+                "PublicRouteTable",
+                "GatewayAttachment"
+            ],
+            "Properties": {
+                "SubnetId": {
+                    "Ref": "publicsubnet3"
+                },
+                "RouteTableId": {
+                    "Ref": "PublicRouteTable"
+                }
+            }
+        }
+    },
+    "Outputs": {
+        "MyStacksRegion" : { "Value" : { "Ref" : "AWS::Region" } },
+        "VPCId":{ "Value" : { "Ref" : "VPC" } },
+        "InternetGatewaySId" : { "Value" : { "Ref" : "InternetGateway" } },
+        "PublicRoutetable" : { "Value" : { "Ref" : "PublicRouteTable" } },
+
+    }
+}
