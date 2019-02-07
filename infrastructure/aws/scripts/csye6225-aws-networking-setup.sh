@@ -231,3 +231,88 @@ else
     exit $IGW_ATTACH_STATUS
 fi
 
+#--------------------------------------------------------------------------------------------------
+#Step5: Create a public Route Table. Attach all subnets created above to the route table.
+#--------------------------------------------------------------------------------------------------
+# Create Public Route Table
+echo -e "\n"
+echo "------------------------------------------------------------------------------------------------------------------------------"
+echo "Step5: Create a public Route Table. Attach all subnets created above to the route table."
+echo "------------------------------------------------------------------------------------------------------------------------------"
+PUBLIC_ROUTE_TABLE_ID=$(aws ec2 create-route-table \
+  --vpc-id $VPC_ID \
+  --query 'RouteTable.{RouteTableId:RouteTableId}' \
+  --output text \
+  --region $REGION 2>&1)
+  ROUTE_TABLE_CREATE_STATUS=$?
+if [ $ROUTE_TABLE_CREATE_STATUS -eq 0 ]; then
+  echo "Route Table ID '$PUBLIC_ROUTE_TABLE_ID' CREATED."
+else
+    echo "Error:Route table not created!!"
+    echo "$PUBLIC_ROUTE_TABLE_ID "
+    exit $ROUTE_TABLE_CREATE_STATUS
+fi
+
+# Rename to Public Route Table
+echo -e "\n"
+echo "***RENAME ROUTE TABLE***"
+ROUTE_TABLE_RENAME=$(aws ec2 create-tags \
+  --resources $PUBLIC_ROUTE_TABLE_ID \
+  --tags "Key=Name,Value=$publicRouteTableName" 2>&1)
+ROUTE_TABLE_RENAME_STATUS=$?
+if [ $ROUTE_TABLE_RENAME_STATUS -eq 0 ]; then
+  echo "Route table ID '$PUBLIC_ROUTE_TABLE_ID' NAMED as '$publicRouteTableName'."
+else
+    echo "##########Error:ROUTE_TABLE name not added!!"
+    echo " $ROUTE_TABLE_RENAME "
+    exit $ROUTE_TABLE_RENAME_STATUS
+fi
+
+#Create route to Internet Gateway
+echo -e "\n"
+echo "***CREATE ROUTE TO IGW***"
+RESULT=$(aws ec2 create-route \
+  --route-table-id $PUBLIC_ROUTE_TABLE_ID \
+  --destination-cidr-block 0.0.0.0/0 \
+  --gateway-id $IGW_ID \
+  --region $REGION)
+RESULT_STATUS=$?
+if [ $RESULT_STATUS -eq 0 ]; then
+  echo "Route to '0.0.0.0/0' via Internet Gateway ID '$IGW_ID' ADDED to Route Table ID '$PUBLIC_ROUTE_TABLE_ID'."
+else
+    echo "##########Error:Route to Internet gateway not created!!"
+    echo " $RESULT "
+    exit $RESULT_STATUS
+fi
+
+
+
+
+#6.Create a public route in the public route table created above with destination CIDR block 0.0.0.0/0 and internet gateway creted above as the target.
+
+#Associate a Route Table with a Public subnet
+echo -e "\n"
+echo "***BEGIN SUBNET TO ROUTE TABLE ASSOCIATION***"
+Public_Associate_1=$(aws ec2 associate-route-table \
+  --subnet-id $PUBLIC_SUBNET_1 \
+  --route-table-id $PUBLIC_ROUTE_TABLE_ID \
+  --region $REGION)
+echo "Public Subnet ID '$PUBLIC_SUBNET_1' ASSOCIATED with Route Table ID" \
+  "'$PUBLIC_ROUTE_TABLE_ID'."
+
+echo -e "\n"
+Public_Associate_2=$(aws ec2 associate-route-table  \
+  --subnet-id $PUBLIC_SUBNET_2 \
+  --route-table-id $PUBLIC_ROUTE_TABLE_ID \
+  --region $REGION)
+echo "Public Subnet ID '$PUBLIC_SUBNET_2' ASSOCIATED with Route Table ID" \
+  "'$PUBLIC_ROUTE_TABLE_ID'."
+
+echo -e "\n"
+Public_Associate_3=$(aws ec2 associate-route-table  \
+  --subnet-id $PUBLIC_SUBNET_3 \
+  --route-table-id $PUBLIC_ROUTE_TABLE_ID \
+  --region $REGION)
+echo "Public Subnet ID '$PUBLIC_SUBNET_3' ASSOCIATED with Route Table ID" \
+  "'$PUBLIC_ROUTE_TABLE_ID'."
+
