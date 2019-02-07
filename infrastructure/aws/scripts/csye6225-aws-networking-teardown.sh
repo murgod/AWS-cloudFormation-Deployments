@@ -60,4 +60,64 @@ route_Table_Id1=${route_Table_Id}
 
 echo "First Route-Table ID: '$route_Table_Id1'"
 
+# Disassociates the Public Subnets with Route Table
+echo -e "\n"
+echo "-----DIASSOCIATING SUBNET AND ROUTE TABLE-----"
+aws ec2 describe-route-tables \
+	--query 'RouteTables[*].Associations[].{RouteTableAssociationId:RouteTableAssociationId}' \
+	--route-table-id $route_Table_Id1 \
+	--output text|while read var_Associate; do aws ec2 disassociate-route-table --association-id $var_Associate; done
+echo "DIASSOCAITED SUBNET AND ROUTE TABLE"
 
+echo -e "\n"
+echo "-----DELETING SUBNETS-----"
+while
+sub=$(aws ec2 describe-subnets \
+	--filters Name=vpc-id,Values=$vpc_Id \
+	--query 'Subnets[*].SubnetId' \
+	--output text)
+[[ ! -z $sub ]]
+do
+        var1=$(echo $sub | cut -f1 -d" ")
+        echo $var1 is deleted
+        aws ec2 delete-subnet --subnet-id $var1
+done
+echo "DELETED SUBNETS"
+
+# Detach Internet Gateway
+echo -e "\n"
+echo "-----DETACHING INTERNET GATEWAY-----"
+aws ec2 detach-internet-gateway \
+	--internet-gateway-id $internetGateway_Id \
+	--vpc-id $vpc_Id
+echo "DETACHED INTERNET GATEWAY"
+
+# Delete Internet Gateway
+echo -e "\n"
+echo "-----DELETING INTERNET GATEWAY-----"
+aws ec2 delete-internet-gateway \
+	--internet-gateway-id $internetGateway_Id
+echo "DELETED INTERNET GATEWAY"
+
+# Retrieving main route table
+echo -e "\n"
+echo "-----GETTING ROUTE TABLE-----"
+main_Route_Table_Id=$(aws ec2 describe-route-tables \
+	--query "RouteTables[?VpcId=='$vpc_Id']|[?Associations[?Main!=true]].RouteTableId" \
+	--output text)
+
+echo "id = $main_Route_Table_Id"
+
+#Delete Route-Table
+echo -e "\n"
+echo "-----DELETING ROUTE-TABLE-----"
+for i in $route_Table_Id
+do
+	echo "Start------ $main_Route_Table_Id"
+	if [[ $i != $main_Route_Table_Id ]]; then
+		aws ec2 delete-route-table --route-table-id $i
+		echo $i
+	fi
+	echo "stop----- $main_Route_Table_Id"
+done
+echo "DELETED ROUTE TABLE"
