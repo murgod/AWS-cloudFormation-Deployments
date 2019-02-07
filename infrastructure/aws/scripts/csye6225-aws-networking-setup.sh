@@ -176,3 +176,58 @@ else
     exit $SUBNET_RENAME_STATUS
 fi
 
+#--------------------------------------------------------------------------------------------------
+#Step3:Create Internet Gateway resource.
+#-------------------------------------------------------------------------------------------------
+echo -e "\n"
+echo "--------------------------------------------------------------------------------------------"
+echo "Step3.Create Internet Gateway resource."
+echo "--------------------------------------------------------------------------------------------"
+IGW_ID=$(aws ec2 create-internet-gateway \
+  --query 'InternetGateway.{InternetGatewayId:InternetGatewayId}' \
+  --output text \
+  --region $REGION 2>&1)
+IGW_CREATE_STATUS=$?
+if [ $IGW_CREATE_STATUS -eq 0 ]; then
+  echo "  Internet Gateway ID '$IGW_ID' CREATED."
+else
+    echo "##########Error:Gateway not created"
+    echo " $IGW_ID "
+    exit $IGW_CREATE_STATUS
+fi
+
+# Rename Internet gateway using aws create-tags command
+echo -e "\n"
+echo "#3.Create Internet Gateway resource."
+IGW_RENAME=$(aws ec2 create-tags \
+  --resources $IGW_ID \
+  --tags "Key=Name,Value=$internetGatewayName" 2>&1)
+IGW_RENAME_STATUS=$?
+if [ $IGW_RENAME_STATUS -eq 0 ]; then
+  echo "  Internet gateway ID '$IGW_ID' Renamed/Tagged as '$internetGatewayName'."
+else
+    echo "##########Error :internetGatewayName rename command returned failure!! check status code"
+    echo "Status Code: $IGW_RENAME "
+    exit $IGW_RENAME_STATUS
+fi
+
+#--------------------------------------------------------------------------------------------------
+#Step4: Attach the Internet Gateway to the created VPC.
+#--------------------------------------------------------------------------------------------------
+echo -e "\n"
+echo "-----------------------------------------------------------------------------------------------"
+echo "Step4: Attach the Internet Gateway to the created VPC."
+echo "-----------------------------------------------------------------------------------------------"
+IGW_ATTACH=$(aws ec2 attach-internet-gateway \
+  --vpc-id $VPC_ID \
+  --internet-gateway-id $IGW_ID \
+  --region $REGION 2>&1)
+IGW_ATTACH_STATUS=$?
+if [ $IGW_ATTACH_STATUS -eq 0 ]; then
+  echo "  Internet Gateway ID '$IGW_ID' ATTACHED to VPC ID '$VPC_ID'."
+else
+    echo "##########Error:Gateway not attached to VPC: $?"
+    echo " $IGW_ATTACH "
+    exit $IGW_ATTACH_STATUS
+fi
+
