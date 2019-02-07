@@ -16,15 +16,25 @@ Maven
 MySQL
 GitHub Account
 Apache Tomcat
+AWS - Cloud Formation
+AWS - VPC
 
 ## Build Instructions
-Import the project using the existing maven project, and find the class having the main method to run the SpringBoot Application. And also before running the SpringBoot applcication, make sure the MySQL server is running.
+WebApp --> Import the project using the existing maven project, and find the class having the main method to run the SpringBoot Application. And also before running the SpringBoot applcication, make sure the MySQL server is running.
+
+AWS --> 
+
+a) Navigate to cloud formation folder and run the following scripts ./csye6225-aws-cf-create-stack.sh and ./csye6225-aws-cf-terminate-stack.sh to create and teardown the stack respectively.
+
+b) Navigate to scripts folder and run the following scripts ./csye6225-aws-networking-setup.sh and ./csye6225-aws-networking-teardown.sh to create and teardown the VPC respectively.
+
 
 ## Deploy Instructions
 
 
 ## Running Tests
 Check for valid email ID.
+Check for stacks creation and deletion
 
 ## CI/CD
 
