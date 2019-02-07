@@ -11,7 +11,7 @@ read sName
 	mRouteIpaddress=0.0.0.0/0
 	StackName=$sName
 
-	echo $vpcTag
+	echo "$sName Stack creation in progress..."
 
 	stackID=$(aws cloudformation create-stack --stack-name $sName --template-body file://csye6225-cf-networking.json --parameters ParameterKey=VPCSubnetCidrBlock,ParameterValue=$mVPCSubnetCidrBlock ParameterKey=AvailabilityZone1,ParameterValue=$mAvailabilityZone1 ParameterKey=AvailabilityZone2,ParameterValue=$mAvailabilityZone2 ParameterKey=AvailabilityZone3,ParameterValue=$mAvailabilityZone3 ParameterKey=PublicSubnetCidrBlock1,ParameterValue=$mSubnetCidrBlock1 ParameterKey=PublicSubnetCidrBlock2,ParameterValue=$mSubnetCidrBlock2 ParameterKey=PublicSubnetCidrBlock3,ParameterValue=$mSubnetCidrBlock3 ParameterKey=RouteIpaddress,ParameterValue=$mRouteIpaddress ParameterKey=StackName,ParameterValue=$StackName --query [StackId] --output text)
 	aws cloudformation wait stack-create-complete --stack-name $stackID
