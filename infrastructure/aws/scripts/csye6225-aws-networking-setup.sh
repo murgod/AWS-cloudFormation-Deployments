@@ -286,8 +286,6 @@ else
 fi
 
 
-
-
 #6.Create a public route in the public route table created above with destination CIDR block 0.0.0.0/0 and internet gateway creted above as the target.
 
 #Associate a Route Table with a Public subnet
@@ -316,3 +314,59 @@ Public_Associate_3=$(aws ec2 associate-route-table  \
 echo "Public Subnet ID '$PUBLIC_SUBNET_3' ASSOCIATED with Route Table ID" \
   "'$PUBLIC_ROUTE_TABLE_ID'."
 
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------
+#step7.Modify the default security group for your VPC to remove existing rules and add new rules to only allow TCP traffic on port 22 and 80 from anywhere.
+#----------------------------------------------------------------------------------------------------------------------------------------------------------
+echo -e "\n"
+
+echo "------------------------------------------------------------------------------------------------------------------------------------------------------"
+echo "step7: Modify the default security group for your VPC to remove existing rules and add new rules to only allow TCP traffic on port 22 and 80 from anywhere."
+echo "----------------------------------------------------------------------------------------------------------------------------------------------------------"
+SecGrpJson=($(aws ec2 create-security-group --group-name $security_group --description "My security group" --vpc-id $VPC_ID | grep -oP '[,\s"]+\K.*?(?=")'))
+#printf "%s\n" ${SecGrpJson[2]}
+SecGrpId=${SecGrpJson[2]}
+#echo $SecGrpId
+
+SECURITY_GROUP_RESULT_STATUS=$?
+if [ $SECURITY_GROUP_RESULT_STATUS -eq 0 ]; then
+  echo "Security Group created with id: $SecGrpId ."
+else
+    echo "##########Error:Security group not created!!"
+    echo " $SecGrpJson"
+    exit $SECURITY_GROUP_RESULT_STATUS
+fi
+
+
+# Retrieving CSG
+echo -e "\n"
+echo "RETRIEVE SECURITY GROUP ID"
+SGId=$(aws ec2 describe-security-groups \
+	--query 'SecurityGroups[*].{GroupId:GroupId}' \
+	--filters "Name=vpc-id,Values=$VPC_ID" "Name=group-name, Values=default" \
+	--output text \
+ 	--region $REGION)
+echo $SGId
+
+echo -e "\n"
+Port_TCP_ingress=$(aws ec2 authorize-security-group-ingress --group-id $SGId --protocol tcp --port 22 --cidr $default_ip)
+Port_TCP_ingress_Result_Status=$?
+Port_HTTP_ingress=$(aws ec2 authorize-security-group-ingress --group-id $SGId --protocol tcp --port 80 --cidr $default_ip)
+Port_HTTP_ingress_Result_Status=$?
+
+if [ $Port_TCP_ingress_Result_Status -eq 0 ]; then
+  echo "Allowing traffic from port 22 in Security GroupId: $SGId ."
+
+  if [ $Port_HTTP_ingress_Result_Status -eq 0 ]; then
+    echo "Allowing traffic from port 80 in Security GroupId: $SGId ."
+  else
+    echo "##########Error:Modification of exiting rules failed!!"
+    echo "Port_HTTP_ingress : ($Port_HTTP_ingress)"
+    exit $Port_HTTP_ingress_Result_Status
+  fi
+
+else
+    echo "##########Error:Modification of exiting rules failed!!"
+    echo "Port_TCP_ingress : ($Port_TCP_ingress)"
+    exit $Port_TCP_ingress_Result_Status
+fi
