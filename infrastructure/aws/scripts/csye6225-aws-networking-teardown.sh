@@ -121,3 +121,26 @@ do
 	echo "stop----- $main_Route_Table_Id"
 done
 echo "DELETED ROUTE TABLE"
+
+# Getting Custom Security Group
+echo -e "\n"
+echo "------GETTIGN CUSTOM SECURITY GROUP-----"
+securityGroupId=$(aws ec2 describe-security-groups \
+	--query 'SecurityGroups[*].{GroupId:GroupId}' \
+	--filters "Name=vpc-id,Values=$vpc_Id" "Name=group-name, Values=$security_Group" \
+	--output text \
+ 	--region $region)
+echo $securityGroupId
+
+# Delete Custom Security Group
+echo -e "\n"
+echo "------DELETING Custom Security Group-----"
+aws ec2 delete-security-group --group-id $securityGroupId
+echo "DELETED CUSTOM SECURITY GROUP"
+
+
+#Delete vpc
+echo -e "\n"
+echo "-----DELETING VPC-----"
+aws ec2 delete-vpc --vpc-id $vpc_Id
+echo "DELETED VPC"

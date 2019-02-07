@@ -5,7 +5,7 @@
 #
 #----------------------------------------------------------------------------------
 # What this SHELL script do ?
-#    
+#
 #1.Create a Virtual Private Cloud (VPC).
 #2.Create subnets in your VPC. You must create 3 subnets, each in different availability zone in the same region under same VPC.
 #3.Create Internet Gateway resource.
@@ -62,7 +62,7 @@ else
 	exit $VPC_CREATE_STATUS
 fi
 
-# Rename VPC using aws create-tags command 
+# Rename VPC using aws create-tags command
 echo -e "\n"
 echo "Rename VPC using aws create-tags command"
 VPC_RENAME=$(aws ec2 create-tags \
@@ -349,10 +349,14 @@ SGId=$(aws ec2 describe-security-groups \
 echo $SGId
 
 echo -e "\n"
+Port_revoke=$(aws ec2 revoke-security-group-ingress --group-id $SGId --source-group $SGId --protocol all)
 Port_TCP_ingress=$(aws ec2 authorize-security-group-ingress --group-id $SGId --protocol tcp --port 22 --cidr $default_ip)
 Port_TCP_ingress_Result_Status=$?
 Port_HTTP_ingress=$(aws ec2 authorize-security-group-ingress --group-id $SGId --protocol tcp --port 80 --cidr $default_ip)
 Port_HTTP_ingress_Result_Status=$?
+Port_TCP_egress=$(aws ec2 authorize-security-group-egress --group-id $SGId --protocol tcp --port 22 --cidr $default_ip)
+Port_HTTP_egress=$(aws ec2 authorize-security-group-egress --group-id $SGId --protocol tcp --port 80 --cidr $default_ip)
+Port_revoke_egress=$(aws ec2 revoke-security-group-egress --group-id $SGId --protocol all --cidr $default_ip)
 
 if [ $Port_TCP_ingress_Result_Status -eq 0 ]; then
   echo "Allowing traffic from port 22 in Security GroupId: $SGId ."
