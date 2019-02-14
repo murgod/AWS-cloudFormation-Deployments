@@ -27,8 +27,10 @@ a) Note.java
 b) NoteDao.java
 c) NoteRepository.java
 
-Note is the model class which is basically a POJO file. It consists of notes format
-NoteDao is the service file which has all the method to create, update and file the notes.
+Note is the model class which is basically a POJO file. It consists of notes format.
+
+NoteDao is the service file which has all the method to create, update and delete the notes.
+
 NoteRepository is an Interface where we extend the JPA Repository
 
 AWS -->
