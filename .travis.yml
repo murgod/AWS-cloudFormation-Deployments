@@ -7,22 +7,5 @@ sudo: false
 install: true
     
 script:
-  - pwd
-  - ls -a
-  - echo spring.datasource.url=jdbc:mysql://${DB_EndPoint}:3306/user_details >> webapp/src/main/resources/application.properties
-  - echo SECRET_KEY=${secret_access_key} >> webapp/src/main/resources/application.properties
-  - echo ACCESS_KEY=${access_key_id} >> webapp/src/main/resources/application.properties
-  - cat webapp/src/main/resources/application.properties
-  - pwd
-  - ls -a
-  - cd webapp/
-  - pwd
-  - ls -a
   - mvn clean
   - mvn install -DskipTests=true
-  - cd target/
-  - pwd
-  - ls -a 
-  - cd ../../../
-  - pwd
-  - ls -a
