@@ -116,7 +116,7 @@
                 "AllocatedStorage" : "20",
                 "Engine" : "MySQL",
                 "MultiAZ" : "false",
-                "DBInstanceIdentifier" : "csye6225-Spring2018",
+                "DBInstanceIdentifier" : "csye6225-Spring2019",
                 "MasterUsername" : "csye6225master",
                 "MasterUserPassword" : "csye6225password",
                 "DBSubnetGroupName" : {"Ref": "dbsubnetgroup"},
