@@ -2,20 +2,20 @@ version: 0.0
 os: linux
 
 files:
-  - source: ./webapp/build/libs/ROOT.war
+  - source: /webapp/build/libs/ROOT.war
     destination: /var/lib/tomcat/webapps 
 
 hooks:
   AfterInstall:
-   - location: ./infrastructure/aws/codedeploy/afterInstall.sh
+   - location: /infrastructure/aws/codedeploy/afterInstall.sh
      timeout: 180
      runas: centos
   ApplicationStart:
-   - location: ./infrastructure/aws/codedeploy/applicationStart.sh
+   - location: /infrastructure/aws/codedeploy/applicationStart.sh
      timeout: 180
      runas: centos
   ApplicationStop:
-   - location: ./infrastructure/aws/codedeploy/applicationStop.sh
+   - location: /infrastructure/aws/codedeploy/applicationStop.sh
      timeout: 180
      runas: centos
   
