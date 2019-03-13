@@ -15,8 +15,8 @@ jobs:
           name: Install awscli
           command: |
             sudo pip install awscli
-            aws configure set aws_access_key_id AKIAIR524BY776IVW6WQ
-            aws configure set aws_secret_access_key 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
+            aws configure set aws_access_key_id AKIAICHTO2S3TG3C6ZMQ
+            aws configure set aws_secret_access_key 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
             aws configure set default.region us-east-1
 
       - run:
