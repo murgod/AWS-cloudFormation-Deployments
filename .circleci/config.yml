@@ -50,8 +50,8 @@ jobs:
       - run:
           name: Upload Artifact to S3
           command: |
-            aws s3 sync codedeploy_artifact s3://code-deploy.csye6225-spring2019-murgoda.me
-      - run:
+            aws s3 sync codedeploy_artifact s3://code-deploy.csye6225-spring2019-murgoda.me            
+       - run:
           name: Make CodeDeploy API call
           command: |
-            echo "Hello CodeDeploy"
+            aws deploy create-deployment --output json --application-name csye6225-webapp --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name csye6225-webapp-deployment --s3-location bucket=code-deploy.csye6225-spring2019-murgoda.me,bundleType=zip,key=csye6225-web-app-${CIRCLE_BUILD_NUM}.zip
