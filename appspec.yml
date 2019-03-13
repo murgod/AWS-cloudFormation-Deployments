@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 
 files:
-  - source: /webapp/target/webApp-0.0.1-SNAPSHOT.jar
+  - source: /webapp/target/webApp-0.0.1-SNAPSHOT.war
     destination: /var/lib/tomcat/webapps 
 
 hooks:
