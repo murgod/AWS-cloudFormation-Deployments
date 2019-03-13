@@ -49,7 +49,7 @@ jobs:
       - run:
           name: Upload Artifact to S3
           command: |
-            aws s3 cp codedeploy_artifact s3://code-deploy.csye6225-spring2019-gadhiyah.me
+            aws s3 cp --recursive codedeploy_artifact s3://code-deploy.csye6225-spring2019-gadhiyah.me
       - run:
           name: Make CodeDeploy API call
           command: |
