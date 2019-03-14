@@ -20,6 +20,14 @@ jobs:
             aws configure set default.region us-east-1
 
       - run:
+          name: Install awscli
+          command: | 
+              sudo pip install awscli
+              mkdir ~/.aws 
+              echo -e "[default]\naws_access_key_id=$AWS_ACCESS_KEY\naws_secret_access_key=$AWS_SECRET_KEY\n" > ~/.aws/credentials
+              aws configure set default.region us-east-1
+
+      - run:
           name: Build Artifact
           command: |
             cd webapp
@@ -38,7 +46,11 @@ jobs:
             pwd
             mkdir -p codedeploy_artifact
             cp infrastructure/aws/codedeploy/*.sh .
+
             zip -r csye6225-web-app-${CIRCLE_BUILD_NUM}.zip webapp/target/webApp-0.0.1-SNAPSHOT.war *.sh *.yml
+            cp infrastructure/aws/codedeploy/*.yml .
+            zip -r csye6225-web-app-${CIRCLE_BUILD_NUM}.zip webapp/target/webapp-0.0.1-SNAPSHOT.jar *.sh *.yml
+
             mv csye6225-web-app-${CIRCLE_BUILD_NUM}.zip codedeploy_artifact/
             cd codedeploy_artifact
             ls -al
@@ -49,8 +61,16 @@ jobs:
       - run:
           name: Upload Artifact to S3
           command: |
+
             aws s3 cp --recursive codedeploy_artifact s3://code-deploy.csye6225-spring2019-gadhiyah.me
       - run:
           name: Make CodeDeploy API call
           command: |
             aws deploy create-deployment --output json --application-name csye6225-webapp --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name csye6225-webapp-deployment --s3-location bucket=code-deploy.csye6225-spring2019-gadhiyah.me,bundleType=zip,key=csye6225-web-app-${CIRCLE_BUILD_NUM}.zip
+
+            aws s3 sync codedeploy_artifact s3://code-deploy.csye6225-spring2019-murgoda.me            
+      - run:
+          name: Make CodeDeploy API call
+          command: |
+            aws deploy create-deployment --output json --application-name csye6225-webapp --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name csye6225-webapp-deployment --s3-location bucket=code-deploy.csye6225-spring2019-murgoda.me,bundleType=zip,key=csye6225-web-app-${CIRCLE_BUILD_NUM}.zip
+
