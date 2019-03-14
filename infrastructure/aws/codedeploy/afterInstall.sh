@@ -1,7 +1,7 @@
 #!/bin/bash
 
-sudo systemctl stop tomcat.service
-
-#sudo rm -rf /var/lib/tomcat/webapps/*
-
-sudo chown tomcat:tomcat /var/lib/tomcat/webapps/webApp-0.0.1-SNAPSHOT.war
+cd /home/centos/webapp
+sudo chown -R centos:centos /home/centos/webapp/*
+sudo chmod +x webApp-0.0.1-SNAPSHOT.jar
+source /etc/profile.d/envvariable.shs
+nohup java -jar webApp-0.0.1-SNAPSHOT.jar > /dev/null 2> /dev/null < /dev/null &
