@@ -26,7 +26,7 @@
 			<configuration>
 				<archive>
 					<manifest>
-						<mainClass>com.roufid.tutorials.AppTest</mainClass>
+						<mainClass>io.webApp.springbootstarter.WebApiApp</mainClass>
 					</manifest>
 				</archive>
 			</configuration>
