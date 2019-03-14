@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo service tomcat start
+sudo systemctl start tomcat
