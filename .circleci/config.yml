@@ -15,9 +15,9 @@ jobs:
           name: Install awscli
           command: |
             sudo pip install awscli
-	     mkdir ~/.aws
-             echo -e "[default]\naws_access_key_id=$AWS_ACCESS_KEY\naws_secret_access_key=$AWS_SECRET_KEY\n" > ~/.aws/credentials
-             aws configure set default.region us-east-1
+            mkdir ~/.aws
+            echo -e "[default]\naws_access_key_id=$AWS_ACCESS_KEY\naws_secret_access_key=$AWS_SECRET_KEY\n" > ~/.aws/credentials
+            aws configure set default.region us-east-1
 
       - run:
           name: Build Artifact
