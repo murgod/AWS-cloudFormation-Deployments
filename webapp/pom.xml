@@ -24,9 +24,13 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.0.0-M3</version>
+				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>io.webApp.springbootstarter.WebApiApp</mainClass>
+						</manifest>
+					</archive>
 					<skipTests>true</skipTests>
 					<useSystemClassLoader>false</useSystemClassLoader>
 				</configuration>
