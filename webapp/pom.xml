@@ -23,7 +23,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>io.webApp.springbootstarter.WebApiApp</mainClass>
+							<mainClass>fully.qualified.MainClass</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
