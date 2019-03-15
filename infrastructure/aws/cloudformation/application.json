@@ -9,6 +9,9 @@
        },
        "NameTag":{
            "Type":"String"
+       },
+       "webappbucket":{
+         "Type":"String"
        }
     },
     "Resources": {
@@ -76,14 +79,25 @@
                                         ]
                                     ]
                                 },
+                                {
+                                    "Fn::Join":[
+                                        "",
+                                        [
+                                            "sudo echo bucketName=",
+                                            {
+                                              "Ref":"webappbucket"
+                                            },
+                                            ">> /etc/profile.d/envvariable.sh \n"
+                                        ]
+                                    ]
+                                },
                                 "sudo echo export awsRDS >> /etc/profile.d/envvariable.sh \n",
-                                "sudo echo bucketName=csye6225-spring2019-gadhiyah.me.csye6225.com >> /etc/profile.d/envvariable.sh \n",
                                 "sudo echo export bucketName >> /etc/profile.d/envvariable.sh \n",
                                 "sudo echo endpointUrl=https://s3.us-east-1.amazonaws.com/ >> /etc/profile.d/envvariable.sh \n",
                                 "sudo echo export endpointUrl >> /etc/profile.d/envvariable.sh \n",
                                 "source /etc/profile.d/envvariable.sh \n",
-				"mkdir /home/centos/webapp \n",
-				"chown centos:centos -R /home/centos/webapp \n",
+				                        "mkdir /home/centos/webapp \n",
+				                        "chown centos:centos -R /home/centos/webapp \n",
                                 "iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j DNAT --to-destination :8080"
                             ]
                         ]
