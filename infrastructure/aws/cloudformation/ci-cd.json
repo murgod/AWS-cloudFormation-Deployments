@@ -9,6 +9,12 @@
         },
         "circleciusername":{
             "Type":"String"
+        },
+        "deploybucket":{
+          "Type":"String"
+        },
+        "attachmentbucket":{
+          "Type":"String"
         }
     },
     "Resources":{
@@ -26,8 +32,8 @@
                         ],
                         "Effect":"Allow",
                         "Resource" : [{
-                            "Fn::Sub":"arn:aws:s3:::code-deploy.csye6225-spring2019-gadhiyah.me/*"
-                        }]
+                            "Fn::Join":["",["arn:aws:s3:::",{"Ref":"deploybucket"},"/*"]]
+                            }]
                     },
                     {
                         "Action":[
@@ -38,7 +44,7 @@
                         ],
                         "Effect":"Allow",
                         "Resource" : [{
-                            "Fn::Sub":"arn:aws:s3:::csye6225-spring2019-gadhiyah.me.csye6225.com/*"
+                            "Fn::Join":["",["arn:aws:s3:::",{"Ref":"attachmentbucket"},"/*"]]
                         }]
                     }
                     ]
@@ -58,14 +64,14 @@
                         ],
                         "Effect":"Allow",
                         "Resource" : [{
-                            "Fn::Sub":"arn:aws:s3:::code-deploy.csye6225-spring2019-gadhiyah.me/*"
+                            "Fn::Join":["",["arn:aws:s3:::",{"Ref":"deploybucket"},"/*"]]
                         }]
                     }]
                 }
             }
 
         },
-        
+
         "CirlceCICodeDeploy":{
             "Type":"AWS::IAM::Policy",
             "Properties":{
@@ -157,7 +163,7 @@
         "s3Bucketcodedeploy" : {
             "Type" : "AWS::S3::Bucket",
             "Properties" : {
-                "BucketName" :"code-deploy.csye6225-spring2019-gadhiyah.me"
+                "BucketName" :{"Ref":"deploybucket"}
             }
         },
 
