@@ -19,10 +19,10 @@
     },
     "Resources":{
         "circleciec2ami":{
-            "Type":"AWS::IAM::Policy",
+            "Type":"AWS::IAM::ManagedPolicy",
             "Properties":{
-                "PolicyName" : "circleci-ec2-ami",
-                "Users":["circleci"],
+                "ManagedPolicyName" : "circleci-ec2-ami",
+                "Users":{"Ref":"circleciusername"},
                 "PolicyDocument":{
                     "Version" : "2012-10-17",
                     "Statement":[{
@@ -67,11 +67,10 @@
             }
         },
         "CodeDeployEC2S3":{
-            "Type":"AWS::IAM::Policy",
+            "Type":"AWS::IAM::ManagedPolicy",
             "Properties":{
-                "PolicyName" : "CodeDeploy-EC2-S3",
-		        "Roles":[{"Ref":"CodeDeployEC2ServiceRole"}],
-                "PolicyDocument":{
+                "ManagedPolicyName" : "CodeDeploy-EC2-S3",
+		            "PolicyDocument":{
                     "Version" : "2012-10-17",
                     "Statement":[{
                         "Action":[
@@ -82,27 +81,15 @@
                         "Resource" : [{
                             "Fn::Join":["",["arn:aws:s3:::",{"Ref":"deploybucket"},"/*"]]
                             }]
-                    },
-                    {
-                        "Action":[
-                            "s3:Get*",
-                            "s3:List*",
-                            "s3:Delete*",
-                            "s3:Put*"
-                        ],
-                        "Effect":"Allow",
-                        "Resource" : [{
-                            "Fn::Join":["",["arn:aws:s3:::",{"Ref":"attachmentbucket"},"/*"]]
-                        }]
                     }
                     ]
                 }
             }
         },
         "CircleCIUploadToS3":{
-            "Type":"AWS::IAM::Policy",
+            "Type":"AWS::IAM::ManagedPolicy",
             "Properties":{
-                "PolicyName" : "CircleCI-Upload-To-S3",
+                "ManagedPolicyName" : "CircleCI-Upload-To-S3",
                 "Users":[{"Ref":"circleciusername"}],
                 "PolicyDocument":{
                     "Version" : "2012-10-17",
@@ -121,9 +108,9 @@
         },
 
         "CirlceCICodeDeploy":{
-            "Type":"AWS::IAM::Policy",
+            "Type":"AWS::IAM::ManagedPolicy",
             "Properties":{
-                "PolicyName" : "CirlceCI-Code-Deploy",
+                "ManagedPolicy" : "CirlceCI-Code-Deploy",
                 "Users":[{"Ref":"circleciusername"}],
                 "PolicyDocument":{
                     "Version" : "2012-10-17",
@@ -172,6 +159,14 @@
             "Type":"AWS::IAM::Role",
             "Properties":{
                 "RoleName":"CodeDeployEC2ServiceRole",
+                "ManagedPolicyArns":[
+               {
+                  "Ref":"CodeDeployEC2S3"
+               },
+               {
+                  "Ref":"AccessAttachmentToS3Bucket"
+               }
+            ],
                 "AssumeRolePolicyDocument":{
                     "Version" : "2012-10-17",
                     "Statement": [ {
@@ -209,6 +204,28 @@
             "Properties":{
                 "InstanceProfileName": "CodeDeployEC2ServiceRoleProfile",
                 "Roles":[{"Ref":"CodeDeployEC2ServiceRole"}]
+            }
+        },
+        "AccessAttachmentToS3Bucket":{
+            "Type":"AWS::IAM::ManagedPolicy",
+            "Properties":{
+                "ManagedPolicyName" : "Access-Attachment-To-S3-Bucket",
+                "Description":"Policy for uploading attachments into S3",
+		            "PolicyDocument":{
+                    "Version" : "2012-10-17",
+                    "Statement":[{
+                        "Action":[
+                            "s3:Get*",
+                            "s3:List*",
+                            "s3:Delete*",
+                            "s3:Put*"
+                        ],
+                        "Effect":"Allow",
+                        "Resource" : [{
+                            "Fn::Join":["",["arn:aws:s3:::",{"Ref":"attachmentbucket"},"/*"]]
+                        }]
+                    }]
+                }
             }
         },
         "codedeployapplication":{
