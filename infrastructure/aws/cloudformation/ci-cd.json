@@ -22,7 +22,7 @@
             "Type":"AWS::IAM::ManagedPolicy",
             "Properties":{
                 "ManagedPolicyName" : "circleci-ec2-ami",
-                "Users":{"Ref":"circleciusername"},
+                "Users":[{"Ref":"circleciusername"}],
                 "PolicyDocument":{
                     "Version" : "2012-10-17",
                     "Statement":[{
@@ -110,7 +110,7 @@
         "CirlceCICodeDeploy":{
             "Type":"AWS::IAM::ManagedPolicy",
             "Properties":{
-                "ManagedPolicy" : "CirlceCI-Code-Deploy",
+                "ManagedPolicyName" : "CirlceCI-Code-Deploy",
                 "Users":[{"Ref":"circleciusername"}],
                 "PolicyDocument":{
                     "Version" : "2012-10-17",
