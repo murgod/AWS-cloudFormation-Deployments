@@ -74,3 +74,5 @@ Trigger the build for circleci using the curl command
 #create the application Stack
 
 Trigger the build for circleci using the curl command to deploy the code in centos.
+
+
