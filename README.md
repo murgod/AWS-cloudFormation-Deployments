@@ -9,7 +9,6 @@
 | HemalKumar Gadhiya|001460577 |gadhiya.h@husky.neu.edu|
 | Akshay Murgod|001635872 |murgod.a@husky.neu.edu |
 
-
 ## Technology Stack
 Springboot
 Maven
