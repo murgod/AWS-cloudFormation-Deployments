@@ -68,7 +68,11 @@ public class DevFileStorageService implements FileStorageService {
 	}
 
 	private void uploadFileTos3bucket(String fileName, File file) {
+		try {
 		s3client.putObject(new PutObjectRequest(bucketName, fileName, file));
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 //				new PutObjectRequest(bucketName, fileName, file).withCannedAcl(CannedAccessControlList.PublicRead));
 	}
 
