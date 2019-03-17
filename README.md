@@ -59,7 +59,6 @@ b) Navigate to scripts folder and run the following scripts ./csye6225-aws-netwo
 
 ## Deploy Instructions
 
-
 ## Running Tests
 Check for valid email ID.
 Check for stacks creation and deletion
