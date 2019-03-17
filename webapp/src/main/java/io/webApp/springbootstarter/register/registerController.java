@@ -254,10 +254,16 @@ public class registerController {
 		try {
 			String status = checkAuth(auth);
 			if (status.equals("Success")) {
-				if (noteDao.DeleteNoteUnderEmailList(noteId, email))
-					return ResponseEntity.status(HttpStatus.OK).build();
-				else
+				if (noteDao.DeleteNoteUnderEmailList(noteId, email)) {
+					if (attachDao.DeleteattachmentUnderNoteID(noteId)) {
+						return ResponseEntity.status(HttpStatus.OK).build();
+					}else {
+						throw new NoSuchElementException();
+					}
+				}
+				else {
 					throw new NoSuchElementException();
+				}
 			} else
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		} catch (NoSuchElementException ex) {
