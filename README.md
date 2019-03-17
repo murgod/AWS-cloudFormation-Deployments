@@ -20,6 +20,8 @@ AWS - VPC
 Amazon Route 53
 Amazon S3 Bucket
 
+
+
 ## Build Instructions
 WebApp --> Import the project using the existing maven project, and find the class having the main method to run the SpringBoot Application. And also before running the SpringBoot application, make sure the MySQL server is running. And open Postman to test all the applicable REST API calls.
 
