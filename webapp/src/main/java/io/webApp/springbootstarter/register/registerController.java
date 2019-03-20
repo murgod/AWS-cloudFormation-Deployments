@@ -54,6 +54,8 @@ public class registerController {
 
 	@Autowired
 	private attachmentDao attachDao;
+	
+	private List<attachment> attachmentlist;
 
 	/* Method to verify the Junit test suite */
 	@RequestMapping(method = RequestMethod.GET, value = "/test", produces = "application/json")
@@ -255,11 +257,19 @@ public class registerController {
 			String status = checkAuth(auth);
 			if (status.equals("Success")) {
 				if (noteDao.DeleteNoteUnderEmailList(noteId, email)) {
-					if (attachDao.DeleteattachmentUnderNoteID(noteId)) {
+						attachmentlist = attachDao.findBynoteID(noteId);
+						for (attachment i : attachmentlist) {
+							attachDao.deleteattachment(i.getAttachmentID());
+							
+							if (!fileStorageService.DeleteFile(i.getUrl()))
+								throw new NoSuchElementException();
+						}
+					return ResponseEntity.status(HttpStatus.OK).build();
+					/*if (attachDao.DeleteattachmentUnderNoteID(noteId)) {
 						return ResponseEntity.status(HttpStatus.OK).build();
 					}else {
 						throw new NoSuchElementException();
-					}
+					}*/
 				}
 				else {
 					throw new NoSuchElementException();
