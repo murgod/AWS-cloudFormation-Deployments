@@ -32,9 +32,6 @@ import io.webApp.springbootstarter.fileStorage.FileStorageService;
 import io.webApp.springbootstarter.notes.Note;
 import io.webApp.springbootstarter.notes.NoteDao;
 
-import com.google.common.base.Stopwatch;
-import java.util.concurrent.TimeUnit;
-
 @RestController
 public class registerController {
 
@@ -58,8 +55,6 @@ public class registerController {
 	private final String noteidattachmentsidHTTPPUT = "endpoint.note.id.attachments.id.HTTP.PUT";
 	private final String noteidattachmentsidHTTPDELETE = "endpoint.note.id.attachments.id.HTTP.DELETE";
 
-	Stopwatch stopwatch = Stopwatch.createStarted();
-	
 	@Autowired
 	private UserRepository userRepository;
 
@@ -71,7 +66,7 @@ public class registerController {
 
 	@Autowired
 	private attachmentDao attachDao;
-	
+
 	@Autowired
 	private StatsDClient statsd;
 
@@ -88,7 +83,6 @@ public class registerController {
 	@RequestMapping(method = RequestMethod.POST, value = "/user/register")
 	public String addUser(@RequestBody register userDetails) {
 		statsd.incrementCounter(userHTTPPOST);
-		statsd.recordExecutionTime(userHTTPPOST, stopwatch.elapsed(TimeUnit.MILLISECONDS));
 		logger.info("POST request : \"/user/register\"");
 		if (userDetails.getEmail() == null || userDetails.getPassword() == null || userDetails.getEmail().isEmpty()
 				|| userDetails.getPassword().isEmpty()) {
