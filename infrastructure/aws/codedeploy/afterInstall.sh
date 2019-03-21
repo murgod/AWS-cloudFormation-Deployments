@@ -1,5 +1,4 @@
 #!/bin/bash
-pwd > /home/centos/test.txt
 cd /home/centos/webapp
 sudo chown -R centos:centos /home/centos/webapp
 sudo chmod +x webApp-0.0.1-SNAPSHOT.jar
