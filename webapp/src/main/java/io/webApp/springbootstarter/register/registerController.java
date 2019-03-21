@@ -45,18 +45,18 @@ public class registerController {
 	public register userDetails;
 	private List<attachment> attachmentlist;
 	private final static Logger logger = LoggerFactory.getLogger(registerController.class);
-	private final String testHTTPGET = "endpoint.test.HTTP.GET request \"/test\"";
-	private final String userHTTPGET = "endpoint.HTTP.GET request : \"/\"";
-	private final String userHTTPPOST = "endpoint.user.register.HTTP.POST request : \"/user/register\"";
-	private final String noteHTTPPOST = "endpoint.note.HTTP.POST request: \"/note\"";
-	private final String noteHTTPGET = "endpoint.note.HTTP.GET request: \"/note\"";
-	private final String noteidHTTPGET = "endpoint.note.id.HTTP.GET request : \"/note/{id}\"";
-	private final String noteidHTTPPUT = "endpoint.note.id.HTTP.PUT request : \"/note/{id}\"";
-	private final String noteidHTTPDELETE = "endpoint.note.id.HTTP.DELETE request : \"/note/{id}\"";
-	private final String noteidattachmentsHTTPPOST = "endpoint.note.id.attachments.HTTP.POST request : \"/note/{id}/attachments\"";
-	private final String noteidattachmentsHTTPGET = "endpoint.note.id.attachments.HTTP.GET request : \"/note/{id}/attachments\"";
-	private final String noteidattachmentsidHTTPPUT = "endpoint.note.id.attachments.id.HTTP.PUT request : \"/note/{id}/attachments/{id}\"";
-	private final String noteidattachmentsidHTTPDELETE = "endpoint.note.id.attachments.id.HTTP.DELETE request : \"/note/{id}/attachments/{id}\"";
+	private final String testHTTPGET = "endpoint.test.HTTP.GET";
+	private final String userHTTPGET = "endpoint.HTTP.GET";
+	private final String userHTTPPOST = "endpoint.user.register.HTTP.POST";
+	private final String noteHTTPPOST = "endpoint.note.HTTP.POST";
+	private final String noteHTTPGET = "endpoint.note.HTTP.GET";
+	private final String noteidHTTPGET = "endpoint.note.id.HTTP.GET";
+	private final String noteidHTTPPUT = "endpoint.note.id.HTTP.PUT";
+	private final String noteidHTTPDELETE = "endpoint.note.id.HTTP.DELETE";
+	private final String noteidattachmentsHTTPPOST = "endpoint.note.id.attachments.HTTP.POST";
+	private final String noteidattachmentsHTTPGET = "endpoint.note.id.attachments.HTTP.GET";
+	private final String noteidattachmentsidHTTPPUT = "endpoint.note.id.attachments.id.HTTP.PUT";
+	private final String noteidattachmentsidHTTPDELETE = "endpoint.note.id.attachments.id.HTTP.DELETE";
 
 	Stopwatch stopwatch = Stopwatch.createStarted();
 	
@@ -88,7 +88,7 @@ public class registerController {
 	@RequestMapping(method = RequestMethod.POST, value = "/user/register")
 	public String addUser(@RequestBody register userDetails) {
 		statsd.incrementCounter(userHTTPPOST);
-		statsd.recordExecutionTime(noteHTTPPOST, stopwatch.elapsed(TimeUnit.MILLISECONDS));
+		statsd.recordExecutionTime(userHTTPPOST, stopwatch.elapsed(TimeUnit.MILLISECONDS));
 		logger.info("POST request : \"/user/register\"");
 		if (userDetails.getEmail() == null || userDetails.getPassword() == null || userDetails.getEmail().isEmpty()
 				|| userDetails.getPassword().isEmpty()) {
