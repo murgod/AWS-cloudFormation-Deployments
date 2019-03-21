@@ -231,7 +231,7 @@ public class registerController {
 
 						if (!fileStorageService.DeleteFile(i.getUrl()))
 							logger.error("Delete file failed");
-							throw new NoSuchElementException();
+						throw new NoSuchElementException();
 					}
 					logger.debug("HTTP : 200 OK");
 					return ResponseEntity.status(HttpStatus.OK).build();
@@ -285,7 +285,7 @@ public class registerController {
 				aT.setmD(new metaData(fileName, fileDownloadUri, file.getContentType(), file.getSize()));
 
 				aT = attachDao.Save(aT);
-				
+
 				logger.debug("HTTP : 200 OK");
 				return ResponseEntity.status(HttpStatus.OK).body(aT);
 			} else {
@@ -404,8 +404,7 @@ public class registerController {
 				if (attachDao.DeleteattachmentUnderNoteList(attachmentid, noteId)) {
 					logger.debug("HTTP : 200 OK");
 					return ResponseEntity.status(HttpStatus.OK).build();
-				}
-				else {
+				} else {
 					logger.error("Delete attachment empty");
 					throw new NoSuchElementException();
 				}
@@ -458,7 +457,7 @@ public class registerController {
 		}
 		return "Success";
 	}
-	
+
 	public boolean checkVaildEmailAddr(String email) {
 		logger.info("Checking Email ID pattern");
 		Matcher mat = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
@@ -513,7 +512,7 @@ public class registerController {
 		userRepository.save(userData);
 		return true;
 	}
-	
+
 	public String currentTime() {
 		currentTime Ctime = new currentTime();
 		return Ctime.getCurrentTime();
