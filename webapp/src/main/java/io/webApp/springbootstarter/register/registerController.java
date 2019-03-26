@@ -489,7 +489,7 @@ public class registerController {
 		
 		String AccessKey ="AKIAICBBWL6MHJZATOJQ";
 		String SecretAccessKey ="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";
-		
+		System.out.println("New Deployment number 1");
 		BasicAWSCredentials basicAwsCredentials = new BasicAWSCredentials(AccessKey,SecretAccessKey);
 		AmazonSNS snsClient = AmazonSNSClient
                 .builder()
