@@ -26,8 +26,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.identitymanagement.model.User;
 import com.amazonaws.services.sns.AmazonSNS;
+import com.amazonaws.services.sns.AmazonSNSClient;
 import com.amazonaws.services.sns.AmazonSNSClientBuilder;
 import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sns.model.PublishResult;
@@ -484,9 +487,19 @@ public class registerController {
 		    }
 		}
 		
-        AmazonSNS snsClient = AmazonSNSClientBuilder.defaultClient();
+		String AccessKey ="AKIAICBBWL6MHJZATOJQ";
+		String SecretAccessKey ="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";
+		
+		BasicAWSCredentials basicAwsCredentials = new BasicAWSCredentials(AccessKey,SecretAccessKey);
+		AmazonSNS snsClient = AmazonSNSClient
+                .builder()
+                .withRegion("us-east-1")
+                .withCredentials(new AWSStaticCredentialsProvider(basicAwsCredentials))
+                .build();
+		
+        //AmazonSNS snsClient = AmazonSNSClientBuilder.defaultClient();
         String resetEmail = userDetails.getEmail();
-        logger.info( "Reset Email: " + resetEmail );
+        logger.info( "Reset Email: " + resetEmail )	;
       
         //String topicArn = env.getProperty("sns.arn");
         String topicArn="arn:aws:sns:us-east-1:247355540530:ForgotPassword";
