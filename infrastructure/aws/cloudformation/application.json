@@ -161,7 +161,7 @@
                         "IpProtocol": "tcp",
                         "FromPort": 8080,
                         "ToPort": 8080,
-                        "CidrIp": "0.0.0.0/0"   
+                        "CidrIp": "0.0.0.0/0"
                     }
                 ]
             }
@@ -204,6 +204,10 @@
                     "ReadCapacityUnits": 10,
                     "WriteCapacityUnits": 5
                 },
+                "TimeToLiveSpecification": {
+                "AttributeName": "TTL",
+                "Enabled": "TRUE"
+                },
                 "TableName": "csye6225"
             }
         },
@@ -229,11 +233,12 @@
                     }
                 ],
                 "StorageType": "gp2"
-            },
-            "Metadata": {
-                "AWS::CloudFormation::Designer": {
-                    "id": "a853732c-f945-4991-8eb3-b467bf9cf322"
-                }
+            }
+        },
+        "SNS":{
+            "Type":"AWS::SNS::Topic",
+            "Properties":{
+                "TopicName": "password_reset"
             }
         }
     }
