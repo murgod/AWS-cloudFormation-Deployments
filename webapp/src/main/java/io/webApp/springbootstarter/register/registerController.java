@@ -28,6 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.InstanceProfileCredentialsProvider;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.identitymanagement.model.User;
 import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.AmazonSNSClient;
@@ -487,14 +489,15 @@ public class registerController {
 		    }
 		}
 		
-		String AccessKey ="AKIAICBBWL6MHJZATOJQ";
-		String SecretAccessKey ="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";
+		//String AccessKey ="AKIAICBBWL6MHJZATOJQ";
+		//String SecretAccessKey ="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";
 		System.out.println("New Deployment number 1");
-		BasicAWSCredentials basicAwsCredentials = new BasicAWSCredentials(AccessKey,SecretAccessKey);
+		//BasicAWSCredentials basicAwsCredentials = new BasicAWSCredentials(AccessKey,SecretAccessKey);
 		AmazonSNS snsClient = AmazonSNSClient
                 .builder()
                 .withRegion("us-east-1")
-                .withCredentials(new AWSStaticCredentialsProvider(basicAwsCredentials))
+                //.withCredentials(new AWSStaticCredentialsProvider(basicAwsCredentials))
+                .withCredentials(new InstanceProfileCredentialsProvider(false))
                 .build();
 		
         //AmazonSNS snsClient = AmazonSNSClientBuilder.defaultClient();
