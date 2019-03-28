@@ -12,6 +12,12 @@
         },
         "webappbucket": {
             "Type": "String"
+        },
+        "codedeploybucket":{
+            "Type":"String"
+        },
+        "fromaddress":{
+          "Type":"String"
         }
     },
     "Resources": {
@@ -238,7 +244,28 @@
         "SNS":{
             "Type":"AWS::SNS::Topic",
             "Properties":{
-                "TopicName": "password_reset"
+                "TopicName": "password_reset",
+                "Subscription":[{
+                    "Endpoint" : { "Fn::GetAtt" : [ "lambdafunction", "Arn" ] },
+                    "Protocol" : "lambda"
+                }]
+            }
+        },
+        "lambdafunction":{
+            "Type":"AWS::Lambda::Function",
+            "Properties":{
+                "FunctionName":"SendEmailOnSNS",
+                "Environment":{
+                    "Variables" : { "fromaddr": {"Ref":"fromaddress"}}
+                  },
+                "Code":{
+                    "S3Bucket":{"Ref":"codedeploybucket"},
+                    "S3Key":"Lambda-0.0.1-SNAPSHOT.jar"
+                },
+                "Role": "arn:aws:iam::392230586247:role/service-role/lambdarole",
+                "Timeout": 90,
+                "Handler": "csye6225.lambda.LogEvent::handleRequest",
+                "Runtime":"java8"
             }
         }
     }
