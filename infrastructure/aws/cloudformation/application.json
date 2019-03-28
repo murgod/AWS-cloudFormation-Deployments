@@ -12,6 +12,9 @@
         },
         "webappbucket": {
             "Type": "String"
+        },
+        "codedeploybucket":{
+            "Type":"String"
         }
     },
     "Resources": {
@@ -239,6 +242,20 @@
             "Type":"AWS::SNS::Topic",
             "Properties":{
                 "TopicName": "password_reset"
+            }
+        },
+        "lambdafunction":{
+            "Type":"AWS::Lambda::Function",
+            "Properties":{
+                "FunctionName":"SendEmailOnSNS",
+                "Code":{
+                    "S3Bucket":{"Ref":"codedeploybucket"},
+                    "S3Key":"Lambda-0.0.1-SNAPSHOT.jar"
+                },
+                "Role": "arn:aws:iam::392230586247:role/service-role/lambdarole",
+                "Timeout": 90,
+                "Handler": "csye6225.lambda.LogEvent::handleRequest",
+                "Runtime":"java8"
             }
         }
     }
