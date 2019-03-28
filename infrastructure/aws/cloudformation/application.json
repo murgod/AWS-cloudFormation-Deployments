@@ -279,7 +279,18 @@
                     "S3Bucket":{"Ref":"codedeploybucket"},
                     "S3Key":"Lambda-0.0.1-SNAPSHOT.jar"
                 },
-                "Role": "arn:aws:iam::392230586247:role/service-role/lambdarole",
+		"Role":{
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "arn:aws:iam::",
+                                            {
+                                                "Ref": "Accountno"
+                                            },
+                                            ":role/service-role/lambdaRole"
+                                        ]
+                                    ]
+                                },
                 "Timeout": 90,
                 "Handler": "csye6225.lambda.LogEvent::handleRequest",
                 "Runtime":"java8"
