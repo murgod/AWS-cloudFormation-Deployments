@@ -9,7 +9,6 @@
 | HemalKumar Gadhiya|001460577 |gadhiya.h@husky.neu.edu|
 | Akshay Murgod|001635872 |murgod.a@husky.neu.edu |
 
-
 ## Technology Stack
 Springboot
 Maven
@@ -20,6 +19,8 @@ AWS - Cloud Formation
 AWS - VPC
 Amazon Route 53
 Amazon S3 Bucket
+
+
 
 ## Build Instructions
 WebApp --> Import the project using the existing maven project, and find the class having the main method to run the SpringBoot Application. And also before running the SpringBoot application, make sure the MySQL server is running. And open Postman to test all the applicable REST API calls.
@@ -68,7 +69,6 @@ Designed and Implemented MetricsConfig.java module in the SpringBoot Application
 
 ## Deploy Instructions
 
-
 ## Running Tests
 Check for valid email ID.
 Check for stacks creation and deletion
@@ -82,3 +82,5 @@ Trigger the build for circleci using the curl command
 #create the application Stack
 
 Trigger the build for circleci using the curl command to deploy the code in centos.
+
+
