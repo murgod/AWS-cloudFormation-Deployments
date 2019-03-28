@@ -126,6 +126,7 @@
                                     ]
                                 },
                                 "sudo echo export awsRDS >> /etc/profile.d/envvariable.sh \n",
+                                "sudo echo export ARN >> /etc/profile.d/envvariable.sh \n",
                                 "sudo echo export bucketName >> /etc/profile.d/envvariable.sh \n",
                                 "sudo echo endpointUrl=https://s3.us-east-1.amazonaws.com/ >> /etc/profile.d/envvariable.sh \n",
                                 "sudo echo export endpointUrl >> /etc/profile.d/envvariable.sh \n",
