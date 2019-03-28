@@ -21,6 +21,12 @@ read amiId
 echo "Enter Bucket Name for Attachment Upload"
 read uploadbucket
 
+echo "Enter Bucket Name for codedeploy Upload"
+read codedeploybucket
+
+echo "Enter from address for password Reset Link"
+read fromaddr
+
 
 getStackStatus() {
 	aws cloudformation describe-stacks \
@@ -74,7 +80,7 @@ file_dir_var="file://$dir_var/application.json"
 aws cloudformation create-stack \
 	--stack-name $Stack_Name  \
 	--template-body $file_dir_var \
-	--parameters ParameterKey="keyname",ParameterValue=$KEY_CHOSEN ParameterKey="AmiId",ParameterValue=$amiId ParameterKey="NameTag",ParameterValue="ec2" ParameterKey="webappbucket",ParameterValue="$uploadbucket" \
+	--parameters ParameterKey="keyname",ParameterValue=$KEY_CHOSEN ParameterKey="AmiId",ParameterValue=$amiId ParameterKey="NameTag",ParameterValue="ec2" ParameterKey="webappbucket",ParameterValue="$uploadbucket" ParameterKey="codedeploybucket",ParameterValue="$codedeploybucket" ParameterKey="fromaddress",ParameterValue="$fromaddr"\
 	--disable-rollback
 
 

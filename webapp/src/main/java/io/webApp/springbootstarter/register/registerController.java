@@ -505,7 +505,7 @@ public class registerController {
         logger.info( "Reset Email: " + resetEmail )	;
       
         //String topicArn = env.getProperty("sns.arn");
-        String topicArn="arn:aws:sns:us-east-1:247355540530:ForgotPassword";
+        String topicArn="arn:aws:sns:us-east-1:392230586247:password_reset";
         PublishRequest publishRequest = new PublishRequest(topicArn, userDetails.getEmail());
         PublishResult publishResult = snsClient.publish(publishRequest);
         logger.info( "SNS Publish Result: " + publishResult );
