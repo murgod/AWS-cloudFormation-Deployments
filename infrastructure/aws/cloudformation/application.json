@@ -16,6 +16,9 @@
         "codedeploybucket":{
             "Type":"String"
         },
+        "Accountno":{
+          "Type":"String"
+        },
         "fromaddress":{
           "Type":"String"
         }
@@ -94,6 +97,19 @@
                                                 ]
                                             },
                                             ":3306/csye6225 >> /etc/profile.d/envvariable.sh \n"
+                                        ]
+                                    ]
+                                },
+                                {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "echo ARN=arn:aws:sns:us-east-1:",
+                                            {
+                                                "Ref": "Accountno"
+
+                                            },
+                                            ":password_reset >> /etc/profile.d/envvariable.sh \n"
                                         ]
                                     ]
                                 },
