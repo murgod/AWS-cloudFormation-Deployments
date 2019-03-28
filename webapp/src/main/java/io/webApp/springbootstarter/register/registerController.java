@@ -6,17 +6,14 @@ import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -26,14 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.InstanceProfileCredentialsProvider;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
-import com.amazonaws.services.identitymanagement.model.User;
 import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.AmazonSNSClient;
-import com.amazonaws.services.sns.AmazonSNSClientBuilder;
 import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sns.model.PublishResult;
 import com.timgroup.statsd.StatsDClient;
@@ -50,6 +42,7 @@ public class registerController {
 
 	private final static Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern
 			.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
 	private String email;
 	private String password;
 	public register userDetails;
@@ -82,6 +75,9 @@ public class registerController {
 
 	@Autowired
 	private StatsDClient statsd;
+
+	@Value("${ARN}")
+	private String topicArn;
 
 	/* Method to verify the Junit test suite */
 	@RequestMapping(method = RequestMethod.GET, value = "/test", produces = "application/json")
@@ -464,58 +460,41 @@ public class registerController {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
 	}
-	
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/reset")
 	public String reserPassword(@RequestBody register userDetails) {
 		statsd.incrementCounter(userHTTPPOST);
-		
-	    logger.info("POST request : \"/reset\"");
-		
-		if (userDetails.getEmail() == null) 
-		{
+
+		logger.info("POST request : \"/reset\"");
+
+		if (userDetails.getEmail() == null) {
 			logger.error("Credentials should not be empty");
 			return "{\"RESPONSE\" : \"User email not provided\"}";
 		}
-        
-		System.out.println("Email id for which password to be reset : "+userDetails.getEmail());
-		
-		if (checkVaildEmailAddr(userDetails.getEmail())) 
-		{
-		    if (!checkAlreadyPresent(userDetails)) 
-		    {
+
+		logger.debug("Reset password for Email id : " + userDetails.getEmail());
+
+		if (checkVaildEmailAddr(userDetails.getEmail())) {
+			if (!checkAlreadyPresent(userDetails)) {
 				logger.debug("This user is not registered with us");
-				return "{\"RESPONSE\" : \"This user is not registered with us! Please register\"}";
-		    }
+				return "{\"RESPONSE\" : \"User not registered ! Please register\"}";
+			}
 		}
-		
-		//String AccessKey ="AKIAICBBWL6MHJZATOJQ";
-		//String SecretAccessKey ="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";
-		System.out.println("New Deployment number 1");
-		//BasicAWSCredentials basicAwsCredentials = new BasicAWSCredentials(AccessKey,SecretAccessKey);
-		AmazonSNS snsClient = AmazonSNSClient
-                .builder()
-                .withRegion("us-east-1")
-                //.withCredentials(new AWSStaticCredentialsProvider(basicAwsCredentials))
-                .withCredentials(new InstanceProfileCredentialsProvider(false))
-                .build();
-		
-        //AmazonSNS snsClient = AmazonSNSClientBuilder.defaultClient();
-        String resetEmail = userDetails.getEmail();
-        logger.info( "Reset Email: " + resetEmail )	;
-      
-        //String topicArn = env.getProperty("sns.arn");
-        String topicArn="arn:aws:sns:us-east-1:247355540530:ForgotPassword";
-        PublishRequest publishRequest = new PublishRequest(topicArn, userDetails.getEmail());
-        PublishResult publishResult = snsClient.publish(publishRequest);
-        logger.info( "SNS Publish Result: " + publishResult );
-        
-        return "{\"RESPONSE\" : \"Password Reset Link was sent to your emailID\"}";
-        
-		
+
+		AmazonSNS snsClient = AmazonSNSClient.builder().withRegion("us-east-1")
+				.withCredentials(new InstanceProfileCredentialsProvider(false)).build();
+
+		String resetEmail = userDetails.getEmail();
+		logger.info("Reset Email: " + resetEmail);
+
+		PublishRequest publishRequest = new PublishRequest(topicArn, userDetails.getEmail());
+		PublishResult publishResult = snsClient.publish(publishRequest);
+		logger.info("SNS Publish Result: " + publishResult);
+
+		return "{\"RESPONSE\" : \"Password Reset Link was sent to your emailID\"}";
+
 	}
-					
-	
+
 	public String checkAuth(String auth) {
 		logger.info("Checking User's Basic Authentication");
 		String[] encodedValue = auth.split(" ");
