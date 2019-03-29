@@ -16,9 +16,6 @@
         "codedeploybucket":{
             "Type":"String"
         },
-        "Accountno":{
-          "Type":"String"
-        },
         "fromaddress":{
           "Type":"String"
         }
@@ -104,12 +101,12 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "echo ARN=arn:aws:sns:us-east-1:",
+                                            "echo ARN=",
                                             {
-                                                "Ref": "Accountno"
+                                                "Fn::GetAtt":["SNS","TopicName"]
 
                                             },
-                                            ":password_reset >> /etc/profile.d/envvariable.sh \n"
+                                            ">> /etc/profile.d/envvariable.sh \n"
                                         ]
                                     ]
                                 },
