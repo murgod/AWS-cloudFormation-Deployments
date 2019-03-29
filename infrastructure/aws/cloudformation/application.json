@@ -16,6 +16,9 @@
         "codedeploybucket":{
             "Type":"String"
         },
+        "Accountno":{
+          "Type":"String"
+        },
         "fromaddress":{
           "Type":"String"
         }
@@ -101,12 +104,12 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "echo ARN=",
+                                            "echo ARN=arn:aws:sns:us-east-1:",
                                             {
-                                                "Fn::GetAtt":["SNS","TopicName"]
+                                                "Ref": "Accountno"
 
                                             },
-                                            ">> /etc/profile.d/envvariable.sh \n"
+                                            ":password_reset >> /etc/profile.d/envvariable.sh \n"
                                         ]
                                     ]
                                 },
@@ -308,6 +311,15 @@
                 }]
             }
         },
+        "lambdaPermission": {
+  "Properties": {
+    "Action": "lambda:*",
+    "FunctionName": { "Fn::GetAtt": [ "lambdafunction", "Arn" ] },
+    "Principal": "sns.amazonaws.com",
+    "SourceArn": {"Ref":"SNS"}
+  },
+  "Type": "AWS::Lambda::Permission"
+},
         "lambdafunction":{
             "Type":"AWS::Lambda::Function",
             "Properties":{
@@ -319,7 +331,9 @@
                     "S3Bucket":{"Ref":"codedeploybucket"},
                     "S3Key":"Lambda-0.0.1-SNAPSHOT.jar"
                 },
-		        "Role":{"Fn::GetAtt" : [ "lambdaexecutionrole", "Arn" ]},
+		        "Role":{
+                            "Fn::GetAtt" : [ "lambdaexecutionrole", "Arn" ]
+                                },
                 "Timeout": 90,
                 "Handler": "csye6225.lambda.LogEvent::handleRequest",
                 "Runtime":"java8"
