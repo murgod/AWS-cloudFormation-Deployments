@@ -278,7 +278,7 @@
                     "arn:aws:iam::aws:policy/AmazonSNSFullAccess",
                     "arn:aws:iam::aws:policy/AmazonSESFullAccess",
 					"arn:aws:iam::aws:policy/AmazonS3FullAccess"
-                    ]
+                ]
             }
         },
         "lambadacloudwatch":{
@@ -286,18 +286,17 @@
 	         "Properties":{
 	            "PolicyName":"LambdaLogsPolicy",
               "Roles":[{"Ref":"lambdaexecutionrole"}],
-	            "PolicyDocument":{
-	               "Version":"2012-10-17",
-	               "Statement":[
-	                 {
-	           "Action": [
-	               "logs:CreateLogGroup",
-	                "logs:CreateLogStream",
-	                "logs:PutLogEvents"
-	           ],
-	           "Effect": "Allow",
-	           "Resource": "arn:aws:logs:*:*:*"
-	       }]
+              "PolicyDocument":{
+                  "Version":"2012-10-17",
+                  "Statement":[{
+                      "Action": [
+                          "logs:CreateLogGroup",
+                          "logs:CreateLogStream",
+                          "logs:PutLogEvents"
+                        ],
+                        "Effect": "Allow",
+                        "Resource": "arn:aws:logs:*:*:*"
+                    }]
 	            }
 	         }
 	   },
@@ -312,18 +311,20 @@
             }
         },
         "lambdaPermission": {
-  "Properties": {
-    "Action": "lambda:*",
-    "FunctionName": { "Fn::GetAtt": [ "lambdafunction", "Arn" ] },
-    "Principal": "sns.amazonaws.com",
-    "SourceArn": {"Ref":"SNS"}
-  },
-  "Type": "AWS::Lambda::Permission"
-},
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+                "Action": "lambda:*",
+                "FunctionName": { "Fn::GetAtt": [ "lambdafunction", "Arn" ] },
+                "Principal": "sns.amazonaws.com",
+                "SourceArn": {"Ref":"SNS"}
+                }
+
+        },
         "lambdafunction":{
             "Type":"AWS::Lambda::Function",
             "Properties":{
                 "FunctionName":"SendEmailOnSNS",
+                "MemorySize":512,
                 "Environment":{
                     "Variables" : { "fromaddr": {"Ref":"fromaddress"}}
                   },
@@ -332,8 +333,9 @@
                     "S3Key":"Lambda-0.0.1-SNAPSHOT.jar"
                 },
 		        "Role":{
-                            "Fn::GetAtt" : [ "lambdaexecutionrole", "Arn" ]
-                                },
+		            "Fn::GetAtt" : [ "lambdaexecutionrole", "Arn" ]
+
+		        },
                 "Timeout": 90,
                 "Handler": "csye6225.lambda.LogEvent::handleRequest",
                 "Runtime":"java8"
