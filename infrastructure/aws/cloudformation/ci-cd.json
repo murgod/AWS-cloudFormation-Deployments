@@ -201,50 +201,6 @@
                     ]
             }
         },
-        "lambdaexecutionrole":{
-            "Type":"AWS::IAM::Role",
-            "Properties":{
-                "RoleName":"lambdaRole",
-                "AssumeRolePolicyDocument":{
-                    "Version":"2012-10-17",
-                    "Statement":[{
-                        "Effect":"Allow",
-                        "Principal":{
-                            "Service":["lambda.amazonaws.com"]
-                        },
-                        "Action":["sts:AssumeRole"]
-                    }]
-                },
-                "ManagedPolicyArns":[
-                    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-                    "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
-                    "arn:aws:iam::aws:policy/AmazonSNSFullAccess",
-                    "arn:aws:iam::aws:policy/AmazonSESFullAccess",
-					"arn:aws:iam::aws:policy/AmazonS3FullAccess"
-                    ]
-            }
-        },
-        "lambadacloudwatch":{
-        "Type":"AWS::IAM::Policy",
-	         "Properties":{
-	            "PolicyName":"LambdaLogsPolicy",
-              "Roles":[{"Ref":"lambdaexecutionrole"}],
-	            "PolicyDocument":{
-	               "Version":"2012-10-17",
-	               "Statement":[
-	                 {
-	           "Action": [
-	               "logs:CreateLogGroup",
-	                "logs:CreateLogStream",
-	                "logs:PutLogEvents"
-	           ],
-	           "Effect": "Allow",
-	           "Resource": "arn:aws:logs:*:*:*"
-	       }]
-	            }
-	         }
-	   },
-
         "ec2instanceprofile":{
             "Type":"AWS::IAM::InstanceProfile",
             "Properties":{
@@ -306,13 +262,5 @@
                 }]
             }
         }
-    },
-    "Outputs":{
-            "lambdarole":{
-                "Value":{"Ref":"lambdaexecutionrole"},
-                "Export":{
-                    "Name":"LambdaExecutionRole"
-                }
-            }
-        }
+    }
 }

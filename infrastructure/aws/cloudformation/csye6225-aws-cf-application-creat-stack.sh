@@ -27,7 +27,7 @@ read codedeploybucket
 echo "Enter from address for password Reset Link"
 read fromaddr
 
-echo "Enter AWS account number"
+echo "Enter Account number for AWS"
 read accountno
 
 getStackStatus() {
@@ -83,7 +83,8 @@ aws cloudformation create-stack \
 	--stack-name $Stack_Name  \
 	--template-body $file_dir_var \
 	--parameters ParameterKey="keyname",ParameterValue=$KEY_CHOSEN ParameterKey="AmiId",ParameterValue=$amiId ParameterKey="NameTag",ParameterValue="ec2" ParameterKey="webappbucket",ParameterValue="$uploadbucket" ParameterKey="codedeploybucket",ParameterValue="$codedeploybucket" ParameterKey="fromaddress",ParameterValue="$fromaddr" ParameterKey="Accountno",ParameterValue="$accountno"\
-	--disable-rollback
+	--disable-rollback \
+	--capabilities CAPABILITY_NAMED_IAM
 
 
 
