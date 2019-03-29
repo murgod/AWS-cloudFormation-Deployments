@@ -287,7 +287,7 @@
                                             {
                                                 "Ref": "Accountno"
                                             },
-                                            ":role/service-role/lambdaRole"
+                                            ":role/lambdaRole"
                                         ]
                                     ]
                                 },
