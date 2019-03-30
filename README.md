@@ -67,7 +67,14 @@ Updated POM.xml with the latest dependency.
 Designed and Implemented log4j2-spring.xml in the Resources folder.
 Designed and Implemented MetricsConfig.java module in the SpringBoot Application.
 
+-> As a user, we are now be able to request reset password link by calling /reset API endpoint
+-> As a user, we have enabled the web application to send a message on password_reset SNS topic for the email service function to actually send email and track the active tokens in DynamoDB.
+
 ## Deploy Instructions
+
+--> Code Deploy for AMI
+--> Code Deploy for Lambda Function
+--> Code Deploy for WebApp
 
 ## Running Tests
 Check for valid email ID.
