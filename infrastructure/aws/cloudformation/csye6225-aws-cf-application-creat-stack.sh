@@ -75,7 +75,7 @@ exitWithErrorMessage() {
 
 dir_var=$(pwd)
 # echo "Current Directory is '$dir_var'"
-file_dir_var="file://$dir_var/application.json"
+file_dir_var="file://$dir_var/csye6225-cf-auto-scaling-application.json"
 
 #Create Stack
 
