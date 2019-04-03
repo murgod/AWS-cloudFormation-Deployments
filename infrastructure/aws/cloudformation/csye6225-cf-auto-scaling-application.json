@@ -412,7 +412,7 @@
             "Properties":{
                 "ApplicationName":{"Ref":"codedeployapplication"},
                 "DeploymentGroupName":"csye6225-webapp-deployment",
-                "DeploymentConfigName": "CodeDeployDefault.AllAtOnce",
+                "DeploymentConfigName": "CodeDeployDefault.OneAtATime",
                 "AutoScalingGroups":[{"Ref":"server"}],
                 "LoadBalancerInfo":{
                   "ElbInfoList":[{
@@ -438,7 +438,7 @@
                 },
                 "DeploymentStyle":{
                     "DeploymentType":"IN_PLACE",
-                    "DeploymentOption": "WITHOUT_TRAFFIC_CONTROL"
+                    "DeploymentOption": "WITH_TRAFFIC_CONTROL"
                 },
                 "Ec2TagFilters":[{
                     "Key" : "Name",
