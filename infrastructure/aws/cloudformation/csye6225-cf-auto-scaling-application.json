@@ -57,7 +57,7 @@
                                 "#!/bin/bash -xe \n",
                                 "sudo yum install java-1.8.0-openjdk -y \n",
                                 "sudo yum install java-1.8.0-openjdk-devel -y \n",
-                                "sudo echo DBCreationType=update >> /etc/profile.d/envvariable.sh \n",
+                                "sudo echo DBCreationType=create >> /etc/profile.d/envvariable.sh \n",
                                 "sudo echo export DBCreationType >> /etc/profile.d/envvariable.sh \n",
                                 "sudo echo username=csye6225master >> /etc/profile.d/envvariable.sh \n",
                                 "sudo echo export username >> /etc/profile.d/envvariable.sh \n",
@@ -222,18 +222,6 @@
                 "LoadBalancerArn":{"Ref":"AppLoadBalancer"},
                 "Port":443,
                 "Protocol":"HTTPS"
-            }
-        },
-        "ALBListnerHTTP":{
-            "Type": "AWS::ElasticLoadBalancingV2::Listener",
-            "Properties":{
-                "DefaultActions":[{
-                    "Type":"forward",
-                    "TargetGroupArn":{"Ref":"ALBTargetGroup"}
-                }],
-                "LoadBalancerArn":{"Ref":"AppLoadBalancer"},
-                "Port":80,
-                "Protocol":"HTTP"
             }
         },
         "ALBTargetGroup":{
