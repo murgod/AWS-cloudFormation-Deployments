@@ -132,6 +132,10 @@
                 "MaxSize": "10",
                 "Cooldown": "60",
                 "DesiredCapacity" : "3",
+                "TargetGroupARNs":[
+                    {
+                        "Ref":"ALBTargetGroup"
+                    }],
                 "Tags":[{
                     "Key":"NAME",
                     "Value":{"Ref":"NameTag"},
@@ -176,13 +180,13 @@
         "CPUAlarmHigh":{
           "Type":"AWS::CloudWatch::Alarm",
           "Properties":{
-              "AlarmDescription": "Scale-up if CPU > 90% for 10 minutes",
+              "AlarmDescription": "Scale-up if CPU > 10% for 5 minutes",
               "MetricName":"CPUUtilization",
               "Namespace":"AWS/EC2",
               "Statistic":"Average",
               "Period":300,
-              "EvaluationPeriods":2,
-              "Threshold":90,
+              "EvaluationPeriods":1,
+              "Threshold":10,
               "AlarmActions":[{"Ref":"ScaleUpPolicy"}],
               "Dimensions":[{
                   "Name":"AutoScalingGroupName",
@@ -194,13 +198,13 @@
         "CPUAlarmLow":{
           "Type":"AWS::CloudWatch::Alarm",
           "Properties":{
-              "AlarmDescription": "Scale-down if CPU < 70% for 10 minutes",
+              "AlarmDescription": "Scale-down if CPU < 5% for 5 minutes",
               "MetricName":"CPUUtilization",
               "Namespace":"AWS/EC2",
               "Statistic":"Average",
               "Period":300,
-              "EvaluationPeriods":2,
-              "Threshold":70,
+              "EvaluationPeriods":1,
+              "Threshold":5,
               "AlarmActions":[{"Ref":"ScaleDownPolicy"}],
               "Dimensions":[{
                   "Name":"AutoScalingGroupName",
@@ -228,8 +232,15 @@
             "Type":"AWS::ElasticLoadBalancingV2::TargetGroup",
             "Properties":{
                 "Name":"WebAppTargetGroup",
+                "HealthCheckIntervalSeconds":10,
+                "HealthCheckTimeoutSeconds":5,
+                "UnhealthyThresholdCount":2,
                 "Protocol":"HTTP",
                 "Port":"8080",
+                "TargetGroupAttributes":[{
+                  "Key":"deregistration_delay.timeout_seconds",
+                  "Value":"20"
+                }],
                 "VpcId":{"Fn::ImportValue" : "csye6225-cloud-Networking-VPC-Id"}
             }
 
