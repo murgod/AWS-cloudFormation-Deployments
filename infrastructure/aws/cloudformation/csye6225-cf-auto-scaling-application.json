@@ -426,8 +426,8 @@
                 "DeploymentConfigName": "CodeDeployDefault.OneAtATime",
                 "AutoScalingGroups":[{"Ref":"server"}],
                 "LoadBalancerInfo":{
-                  "ElbInfoList":[{
-                      "Name":{ "Fn::GetAtt":["AppLoadBalancer","LoadBalancerName"]}
+                  "TargetGroupInfoList":[{
+                      "Name":{ "Fn::GetAtt":["ALBTargetGroup","TargetGroupName"]}
                   }]
                 },
                 "AutoRollbackConfiguration":{
@@ -449,7 +449,7 @@
                 },
                 "DeploymentStyle":{
                     "DeploymentType":"IN_PLACE",
-                    "DeploymentOption": "WITH_TRAFFIC_CONTROL"
+                    "DeploymentOption": "WITHOUT_TRAFFIC_CONTROL"
                 },
                 "Ec2TagFilters":[{
                     "Key" : "Name",
