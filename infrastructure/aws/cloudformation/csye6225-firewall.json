@@ -65,7 +65,7 @@
               "Name":"mitigate-sqli",
               "Predicates":[{
                   "Type":"SqlInjectionMatch",
-                  "Negated" : "False",
+                  "Negated" : false,
                   "DataId":{"Ref":"Sqliset"}
 
               }]
@@ -103,7 +103,7 @@
               "Name":"detect-bad-auth-tokens",
               "Predicates":[{
                   "Type":"ByteMatch",
-                  "Negated" : "False",
+                  "Negated" : false,
                   "DataId":{"Ref":"AuthTokenStringSet"}
 
               }]
@@ -173,7 +173,7 @@
               "Name":"mitigate-xss",
               "Predicates":[{
                   "Type":"XssMatch",
-                  "Negated" : "False",
+                  "Negated" : false,
                   "DataId":{"Ref":"XSSSet"}
               }]
           }
@@ -256,7 +256,7 @@
               "Name":"detect-rfi-lfi-traversal",
               "Predicates":[{
                   "Type":"ByteMatch",
-                  "Negated" : "False",
+                  "Negated" : false,
                   "DataId":{"Ref":"PathsStringSet"}
               }]
           }
@@ -290,20 +290,19 @@
         "AdminAccessRule":{
           "Type":"AWS::WAFRegional::Rule",
           "Properties":{
-              "MetricName":"detectadminaccess",
-              "Name":"detect-admin-access",
-              "Predicates":[
-                  {
-                  "Type":"ByteMatch",
-                  "Negated" : "False",
-                  "DataId":{"Ref":"AdminUrlStringSet"}
-              },
+            "MetricName":"detectadminaccess",
+            "Name":"detect-admin-access",
+            "Predicates":[
               {
-                  "Type":"ByteMatch",
-                  "Negated" : "True",
-                  "DataId":{"Ref":"AdminRemoteAddrIpSet"}
-              }
-              ]
+              "Type":"ByteMatch",
+              "Negated":false,
+              "DataId":{"Ref":"AdminUrlStringSet"}
+            },
+            {
+            "Type":"IPMatch",
+            "Negated":true,
+            "DataId":{"Ref":"AdminRemoteAddrIpSet"}
+          }]
           }
         },
         "PHPInsecureQSStringSet":{
@@ -410,12 +409,12 @@
               "Predicates":[
                   {
                   "Type":"ByteMatch",
-                  "Negated" : "False",
+                  "Negated" : false,
                   "DataId":{"Ref":"PHPInsecureQSStringSet"}
               },
               {
                   "Type":"ByteMatch",
-                  "Negated" : "False",
+                  "Negated" : false,
                   "DataId":{"Ref":"PHPInsecureURIStringSet"}
               }
               ]
@@ -469,7 +468,7 @@
               "Predicates":[
                   {
                   "Type":"SizeConstraint",
-                  "Negated" : "False",
+                  "Negated" : false,
                   "DataId":{"Ref":"SizeRestrictionSet"}
               }]
           }
@@ -513,12 +512,12 @@
               "Predicates":[
                   {
                   "Type":"ByteMatch",
-                  "Negated" : "false",
+                  "Negated" : false,
                   "DataId":{"Ref":"MethodStringSet"}
               },
               {
                   "Type":"SizeConstraint",
-                  "Negated" : "true",
+                  "Negated" : true,
                   "DataId":{"Ref":"CSRFTokenSizeConstraint"}
               }]
           }
@@ -602,7 +601,7 @@
               "Predicates":[
                   {
                   "Type":"ByteMatch",
-                  "Negated" : "False",
+                  "Negated" : false,
                   "DataId":{"Ref":"ServerSideIncludeStringSet"}
               }]
           }
@@ -642,7 +641,7 @@
               "Predicates":[
                   {
                   "Type":"IPMatch",
-                  "Negated" : "False",
+                  "Negated" : false,
                   "DataId":{"Ref":"BlacklistIpSet"}
               }]
           }
@@ -653,7 +652,7 @@
                 "MetricName":"ACL",
                 "Name":"ACL",
                 "DefaultAction":{
-                    "Type":"Allow"
+                    "Type":"ALLOW"
                 },
                 "Rules":[
                     {
@@ -710,7 +709,7 @@
                             "Type":"BLOCK"
                         },
                         "Priority":80,
-                        "RuleId":{"Ref":"CSRFTokenSizeConstraint"}
+                        "RuleId":{"Ref":"CSRFRule"}
                     },
                     {
                         "Action":{
@@ -725,7 +724,8 @@
                         },
                         "Priority":100,
                         "RuleId":{"Ref":"AdminAccessRule"}
-                    }]
+                    }
+                  ]
             }
         },
         "ALBAssociation":{
