@@ -237,10 +237,10 @@
                 "UnhealthyThresholdCount":2,
                 "Protocol":"HTTP",
                 "Port":"8080",
-                "TargetGroupAttributes":{
+                "TargetGroupAttributes":[{
                   "Key":"deregistration_delay.timeout_seconds",
                   "Value":"20"
-                },
+                }],
                 "VpcId":{"Fn::ImportValue" : "csye6225-cloud-Networking-VPC-Id"}
             }
 
