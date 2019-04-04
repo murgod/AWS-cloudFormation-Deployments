@@ -132,6 +132,10 @@
                 "MaxSize": "10",
                 "Cooldown": "60",
                 "DesiredCapacity" : "3",
+                "TargetGroupARNs":[
+                    {
+                        "Ref":"ALBTargetGroup"
+                    }],
                 "Tags":[{
                     "Key":"NAME",
                     "Value":{"Ref":"NameTag"},
@@ -228,8 +232,15 @@
             "Type":"AWS::ElasticLoadBalancingV2::TargetGroup",
             "Properties":{
                 "Name":"WebAppTargetGroup",
+                "HealthCheckIntervalSeconds":10,
+                "HealthCheckTimeoutSeconds":5,
+                "UnhealthyThresholdCount":2,
                 "Protocol":"HTTP",
                 "Port":"8080",
+                "TargetGroupAttributes":{
+                  "Key":"deregistration_delay.timeout_seconds",
+                  "Value":"20"
+                },
                 "VpcId":{"Fn::ImportValue" : "csye6225-cloud-Networking-VPC-Id"}
             }
 
