@@ -88,7 +88,12 @@ public class registerController {
 		user.setPassword("Admin@123");
 		return user;
 	}
-
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/health", produces = "application/json")
+	public ResponseEntity<String>  healthCheck() {
+		return ResponseEntity.status(HttpStatus.OK).body("Health check successsfu");
+	}
+	
 	@RequestMapping(method = RequestMethod.POST, value = "/user/register")
 	public String addUser(@RequestBody register userDetails) {
 		statsd.incrementCounter(userHTTPPOST);
