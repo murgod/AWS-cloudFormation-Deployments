@@ -94,12 +94,6 @@ public class registerController {
 		return ResponseEntity.status(HttpStatus.OK).body("Health check successsfu");
 	}
 	
-        @RequestMapping(method = RequestMethod.GET, value = "/", produces = "application/json")
-	public ResponseEntity<String>  rootCheck() {
-		return ResponseEntity.status(HttpStatus.OK).body("Root check successsfu");
-	}
-
-
 	@RequestMapping(method = RequestMethod.POST, value = "/user/register")
 	public String addUser(@RequestBody register userDetails) {
 		statsd.incrementCounter(userHTTPPOST);
