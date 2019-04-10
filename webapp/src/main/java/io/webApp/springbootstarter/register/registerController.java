@@ -88,6 +88,12 @@ public class registerController {
 		user.setPassword("Admin@123");
 		return user;
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/health", produces = "application/json")
+	@ResponseStatus(HttpStatus.OK)
+	public String healthCheck() {
+		return "Health check successsful";
+	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/user/register")
 	public String addUser(@RequestBody register userDetails) {
