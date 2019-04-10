@@ -346,9 +346,11 @@
                 "Name": "WebAppTargetGroup",
                 "HealthCheckIntervalSeconds": 10,
                 "HealthCheckTimeoutSeconds": 5,
+                "HealthyThresholdCount":2,
                 "UnhealthyThresholdCount": 2,
+                "HealthCheckPath":"/health",
                 "Protocol": "HTTP",
-                "Port": "80",
+                "Port": "8080",
                 "TargetGroupAttributes": [
                     {
                         "Key": "deregistration_delay.timeout_seconds",
@@ -366,9 +368,11 @@
                 "Name": "WebAppTargetGroup2",
                 "HealthCheckIntervalSeconds": 10,
                 "HealthCheckTimeoutSeconds": 5,
+                "HealthCheckPath":"/health",
+                "HealthyThresholdCount":2,
                 "UnhealthyThresholdCount": 2,
                 "Protocol": "HTTP",
-                "Port": "80",
+                "Port": "8080",
                 "TargetGroupAttributes": [
                     {
                         "Key": "deregistration_delay.timeout_seconds",
