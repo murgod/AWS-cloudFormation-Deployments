@@ -539,12 +539,22 @@ public class registerController {
 		return "Success";
 	}
 
+	/**
+	 * checks the validity of email address and whether it follows NIST standards
+	 * @param email in String
+	 * @return true on success, else false
+	 */
 	public boolean checkVaildEmailAddr(String email) {
 		logger.info("Checking Email ID pattern");
 		Matcher mat = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
 		return mat.find();
 	}
 
+	/**
+	 * checks if the user has already registered
+	 * @param userDetails in register object
+	 * @return true on success, else false
+	 */
 	public boolean checkAlreadyPresent(register userDetails) {
 		logger.info("Checking Email ID Already present");
 		ArrayList<register> dbList = new ArrayList<>(userRepository.findAll());
@@ -558,6 +568,11 @@ public class registerController {
 		return false;
 	}
 
+	/**
+	 * compares the given password is valid and matches with the user registered password details
+	 * @param userDetails in register object
+	 * @return true on success, else false
+	 */
 	public boolean checkPassword(register userDetails) {
 		logger.info("Checking password");
 		ArrayList<register> dbList = new ArrayList<>(userRepository.findAll());
@@ -575,6 +590,11 @@ public class registerController {
 		return false;
 	}
 
+	/**
+	 * check if the given password is valid and follows NIST standards
+	 * @param password in String
+	 * @return true on success, else false
+	 */
 	public boolean isValidPassword(String password) {
 		if (!(password.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"))) {
 			logger.error("Invalid password");
@@ -584,16 +604,23 @@ public class registerController {
 		return true;
 	}
 
+	/**
+	 * register and save the user details in DB/Table
+	 * @param userData register object
+	 * @return true on success
+	 */
 	public boolean registerUser(@RequestBody final register userData) {
-
 		String password = BCrypt.hashpw(userData.getPassword(), BCrypt.gensalt());
 		logger.debug("Password salt : " + password);
 		userData.setPassword(password);
-
 		userRepository.save(userData);
 		return true;
 	}
 
+	/**
+	 * Get the current time
+	 * @return date and formatted time in String
+	 */
 	public String currentTime() {
 		currentTime Ctime = new currentTime();
 		return Ctime.getCurrentTime();
