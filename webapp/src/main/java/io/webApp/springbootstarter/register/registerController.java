@@ -90,9 +90,8 @@ public class registerController {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/health", produces = "application/json")
-	@ResponseStatus(HttpStatus.OK)
-	public String healthCheck() {
-		return "Health check successsful";
+	public ResponseEntity<String>  healthCheck() {
+		return ResponseEntity.status(HttpStatus.OK).body("Health check successsfu");
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/user/register")
