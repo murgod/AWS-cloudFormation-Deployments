@@ -21,6 +21,7 @@ import io.webApp.springbootstarter.notes.Note;
 
 /**
  * Attachment POJO class
+ * 
  * @author satishkumaranbalagan
  *
  */
@@ -54,6 +55,7 @@ public class attachment {
 
 	/**
 	 * Get Attachment ID
+	 * 
 	 * @return attachmentID in String
 	 */
 	public String getAttachmentID() {
@@ -62,6 +64,7 @@ public class attachment {
 
 	/**
 	 * Set Attachment ID
+	 * 
 	 * @param attachmentID in String
 	 */
 	public void setAttachmentID(String attachmentID) {
@@ -70,6 +73,7 @@ public class attachment {
 
 	/**
 	 * Get Metadata of attachment
+	 * 
 	 * @return mD in String
 	 */
 	public String getmD() {
@@ -78,6 +82,7 @@ public class attachment {
 
 	/**
 	 * Set Metadata of attachment
+	 * 
 	 * @param mD in String
 	 */
 	public void setmD(metaData mD) {
@@ -86,6 +91,7 @@ public class attachment {
 
 	/**
 	 * Get the URL of the attachment
+	 * 
 	 * @return url in String
 	 */
 	public String getUrl() {
@@ -94,6 +100,7 @@ public class attachment {
 
 	/**
 	 * Set the URL of the attachment
+	 * 
 	 * @param url in String
 	 */
 	public void setUrl(String url) {
@@ -102,6 +109,7 @@ public class attachment {
 
 	/**
 	 * Get the ID of the Note
+	 * 
 	 * @return noteID in String
 	 */
 	public String getNoteID() {
@@ -110,15 +118,17 @@ public class attachment {
 
 	/**
 	 * Set the ID of the Note
+	 * 
 	 * @param noteID in String
 	 */
 	public void setNoteID(String noteID) {
 		this.noteID = noteID;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 * Attachment object in String
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString() Attachment object in String
 	 */
 	@Override
 	public String toString() {
@@ -126,7 +136,8 @@ public class attachment {
 	}
 
 	/**
-	 * Get the Note of attachment 
+	 * Get the Note of attachment
+	 * 
 	 * @return note Object
 	 */
 	public Note getNote() {
@@ -135,6 +146,7 @@ public class attachment {
 
 	/**
 	 * Set the Note of attachment
+	 * 
 	 * @param note Object
 	 */
 	public void setNote(Note note) {

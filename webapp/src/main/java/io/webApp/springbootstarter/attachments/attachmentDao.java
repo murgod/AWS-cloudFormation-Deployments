@@ -10,6 +10,7 @@ import io.webApp.springbootstarter.attachments.attachmentRepository;
 
 /**
  * Attachment table class with helper functions
+ * 
  * @author satishkumaranbalagan
  *
  */
@@ -22,6 +23,7 @@ public class attachmentDao {
 
 	/**
 	 * Save a attachment
+	 * 
 	 * @param nt attachment object
 	 * @return the saved entity will never be NULL
 	 */
@@ -31,6 +33,7 @@ public class attachmentDao {
 
 	/**
 	 * get all attachments
+	 * 
 	 * @return all attachments in List
 	 */
 	public List<attachment> findAll() {
@@ -39,15 +42,17 @@ public class attachmentDao {
 
 	/**
 	 * get an attachment based on ID
+	 * 
 	 * @param attachmentid ID of attachment
 	 * @return attachment object with given ID
 	 */
 	public Optional<attachment> attachmentById(String attachmentid) {
 		return attachmentRepo.findById(attachmentid);
 	}
-	
+
 	/**
 	 * delete an attachment based on Id
+	 * 
 	 * @param attachmentid ID of attachment
 	 */
 	public void deleteattachment(String attachmentid) {
@@ -56,6 +61,7 @@ public class attachmentDao {
 
 	/**
 	 * Find the list of attachments based on Note ID
+	 * 
 	 * @param noteID ID of the note in String
 	 * @return attachments in List
 	 */
@@ -65,8 +71,9 @@ public class attachmentDao {
 
 	/**
 	 * Find a specific attachment under a note
+	 * 
 	 * @param attachmentID ID of attachment in String
-	 * @param noteID ID of the Note in String
+	 * @param noteID       ID of the Note in String
 	 * @return attachment object on success else NULL
 	 */
 	public attachment findattachmentUnderAttachmentList(String attachmentID, String noteID) {
@@ -80,8 +87,9 @@ public class attachmentDao {
 
 	/**
 	 * Delete a single attachment under a note
+	 * 
 	 * @param attachmentID ID of attachment in String
-	 * @param noteID ID of the Note in String
+	 * @param noteID       ID of the Note in String
 	 * @return true on success else false
 	 */
 	public boolean DeleteattachmentUnderNoteList(String attachmentID, String noteID) {
@@ -97,6 +105,7 @@ public class attachmentDao {
 
 	/**
 	 * Delete all attachments under a note
+	 * 
 	 * @param noteID ID of the Note in String
 	 * @return true on success else false
 	 */
