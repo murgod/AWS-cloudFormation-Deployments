@@ -95,7 +95,7 @@ public class registerController {
 	}
 	
         @RequestMapping(method = RequestMethod.GET, value = "/", produces = "application/json")
-	public ResponseEntity<String>  healthCheck() {
+	public ResponseEntity<String>  rootCheck() {
 		return ResponseEntity.status(HttpStatus.OK).body("Root check successsfu");
 	}
 
