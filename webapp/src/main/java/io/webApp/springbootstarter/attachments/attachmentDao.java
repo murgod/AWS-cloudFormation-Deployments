@@ -17,7 +17,6 @@ import io.webApp.springbootstarter.attachments.attachmentRepository;
 @Service
 public class attachmentDao {
 
-	// TableCreation tableCreation
 	@Autowired
 	attachmentRepository attachmentRepo;
 
