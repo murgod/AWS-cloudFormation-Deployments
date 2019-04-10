@@ -19,6 +19,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.webApp.springbootstarter.notes.Note;
 
+/**
+ * Attachment POJO class
+ * @author satishkumaranbalagan
+ *
+ */
 @Entity
 @Table(name = "attachment")
 @EntityListeners(AuditingEntityListener.class)

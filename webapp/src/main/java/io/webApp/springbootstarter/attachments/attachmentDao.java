@@ -8,6 +8,11 @@ import org.springframework.stereotype.Service;
 import io.webApp.springbootstarter.attachments.attachment;
 import io.webApp.springbootstarter.attachments.attachmentRepository;
 
+/**
+ * Attachment table class with helper functions
+ * @author satishkumaranbalagan
+ *
+ */
 @Service
 public class attachmentDao {
 
