@@ -348,7 +348,7 @@
                 "HealthCheckTimeoutSeconds": 5,
                 "UnhealthyThresholdCount": 2,
                 "Protocol": "HTTP",
-                "Port": "8080",
+                "Port": "80",
                 "TargetGroupAttributes": [
                     {
                         "Key": "deregistration_delay.timeout_seconds",
@@ -368,7 +368,7 @@
                 "HealthCheckTimeoutSeconds": 5,
                 "UnhealthyThresholdCount": 2,
                 "Protocol": "HTTP",
-                "Port": "8080",
+                "Port": "80",
                 "TargetGroupAttributes": [
                     {
                         "Key": "deregistration_delay.timeout_seconds",
@@ -643,7 +643,7 @@
                 },
                 "DeploymentStyle": {
                     "DeploymentType": "IN_PLACE",
-                    "DeploymentOption": "WITHOUT_TRAFFIC_CONTROL"
+                    "DeploymentOption": "WITH_TRAFFIC_CONTROL"
                 },
                 "Ec2TagFilters": [
                     {
