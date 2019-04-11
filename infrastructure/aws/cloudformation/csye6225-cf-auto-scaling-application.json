@@ -25,6 +25,9 @@
         "CertificateARN": {
             "Type": "String"
         },
+        "CertificateARN2":{
+          "Type":"String"
+        },
         "DomainName": {
             "Type": "String"
         }
@@ -340,6 +343,33 @@
                 "Protocol": "HTTPS"
             }
         },
+          "Certificate1":{
+            "Type":"AWS::ElasticLoadBalancingV2::ListenerCertificate",
+            "Properties":{
+              "Certificates": [
+                  {
+                      "CertificateArn": {
+                          "Ref": "CertificateARN2"
+                      }
+                  }
+              ],
+              "ListenerArn":{"Ref":"ALBListnerHTTPS"}
+            }
+
+          },
+          "Certificate2":{
+            "Type":"AWS::ElasticLoadBalancingV2::ListenerCertificate",
+            "Properties":{
+              "Certificates": [
+                  {
+                      "CertificateArn": {
+                          "Ref": "CertificateARN2"
+                      }
+                  }
+              ],
+              "ListenerArn":{"Ref":"ALBListnerHTTPS2"}
+            }
+          },
         "ALBTargetGroup": {
             "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
             "Properties": {
