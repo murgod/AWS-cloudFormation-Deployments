@@ -505,7 +505,7 @@ public class registerController {
 
 		PublishRequest publishRequest = new PublishRequest(topicArn, userDetails.getEmail());
 		PublishResult publishResult = snsClient.publish(publishRequest);
-		PublishResult publishResult = snsClient.publish(publishRequest);
+		PublishResult publishResult1 = snsClient.publish(publishRequest);
 		logger.info("SNS Publish Result: " + publishResult);
 
 		reply = "{\"RESPONSE\" : \"Password Reset Link was sent to your emailID\"}";
