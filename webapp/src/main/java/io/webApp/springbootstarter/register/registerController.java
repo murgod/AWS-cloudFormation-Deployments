@@ -474,7 +474,7 @@ public class registerController {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/reset", produces = "application/json")
+	@RequestMapping(method = RequestMethod.POST, value = "/resetdemo", produces = "application/json")
 	public ResponseEntity<String> reserPassword(@RequestBody register userDetails) {
 		statsd.incrementCounter(userHTTPPOST);
 
